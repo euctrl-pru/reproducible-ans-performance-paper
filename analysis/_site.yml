@@ -1,4 +1,4 @@
-name: "atmseminar2019paper"
+name: "reproducibleansperformance"
 output_dir: ../docs
 navbar:
   title: "Reproducible ANS Performance"
