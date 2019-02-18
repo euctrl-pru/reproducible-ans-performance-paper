@@ -23,9 +23,9 @@ The raw data filenames are as follows:
 * positions data, i.e. `mas_05_cpr_fr24_synth_positions_2017-08-01.csv.bz2`
 
 PRU's [Open Reference Trajectory dataset](https://github.com/euctrl-pru/reftrj)
-makes available the files needed for the analysis in this project,
-you can retrieve them either by saving from your browser the relevant linked
-flight and position files or use Google `gsutil` as follows:
+makes available the files needed for the analysis in this project;
+you can retrieve them either by saving the relevant linked
+flight and position files from your browser or by using Google `gsutil` as follows:
 
 ```{bash ,eval=FALSE}
 # enable relevant Python virtual environment (Python 2) if you have one, and you should.
@@ -35,21 +35,21 @@ $ gsutil cp \
     gs://pru-trajectories/sources/merged/overnight_cpr_fr24/raw_cpr_fr24_positions_2017-08-08.csv.bz2 .
 ```
 
-As explained in the paper, you can use `R/extract-arrivals.R` to get to CSV files
+As explained in the paper, you can use `R/extract-arrivals.R` to produce CSV files
 containing only the flights and positions for your airport of initerest.
-You can edit the relevant configuration values at the beginning of the script before launching it.
-Yuo will get:
+You should edit the relevant configuration values at the beginning of the script before launching it.
+You will get:
 
 * Flights details for arrivals at `<airport>` on `<date>`
   are in a CSV file `<airport>_flt_rt_<date>.csv`.
   For example `egll_flt_rt_2017-08-01.csv` is for arrivals to
   London Heathrow Airport (ICAO's id EGLL) on Aug, 1 2017.
   Key data items:
-    * flight_id     unique flight identification
-    * callsign      callsign flight identification of flight
-    * aircraft_reg  aircraft registration
-    * aircraft_type aircraft type, ICAO coding (e.g. A388, B772)
-    * adep / ades   aerodrome of departure / destination
+    * `flight_id`     unique flight identification
+    * `callsign`      callsign flight identification of flight
+    * `aircraft_reg`  aircraft registration
+    * `aircraft_type` aircraft type, ICAO coding (e.g. A388, B772)
+    * `adep` / `ades`   aerodrome of departure / destination
 
 * Position reports for arrival at `<airport>` on `<date>`
   are in a CSV file `<airport>_pos_rt_<date>.csv`.
@@ -67,17 +67,19 @@ For example `eidw_pos_rt_40NM_2017-08-02.csv` is for arrivals'
 positions within 40 nautical miles to Dublin Airport
 (ICAO's id EIDW) on Aug, 2 2017.
 Key data items:
-  * flight_id     unique flight identification
-  * timestamp     position report time
-  * latitude      latitude coordinate (decimal notation)
-  * longitude     longitude coordinate (decimal notation)
-  * on_ground     on-ground / aloft flag
-  * distance      [not sure ~~] miles flown [?]
-  * distance_arp  distance position to aerodrome reference point
+
+  * `flight_id`     unique flight identification
+  * `timestamp`     position report time
+  * `latitude`      latitude coordinate (decimal notation)
+  * `longitude`     longitude coordinate (decimal notation)
+  * `on_ground`     on-ground / aloft flag
+  * `distance`      flown distance
+  * `distance_arp`  distance position to aerodrome reference point
 
 Further we have extracted the transition points from the holding/point merge areas
 using the script `R/extract-transition-points.R` which produces
 the files `<airport>_transition_points_<date>.csv`.
+
 
 ## Version controlled data
 
@@ -86,3 +88,5 @@ We version control only the following data sets in `data`
 * `<airport>_flt_rt_<date>.csv`
 * `<airport>_pos_rt_40NM_<date>.csv`
 * `<airport>_transition_points_<date>.csv`
+
+No files are version controlled in `data-raw`.
