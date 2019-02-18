@@ -1,7 +1,7 @@
-name: "reproducibleansperformance"
+name: reproducibleansperformance
 output_dir: ../docs
 navbar:
-  title: "Reproducible ANS Performance"
+  title: Reproducible ANS Performance
   left:
   - text: Home
     href: index.html
@@ -11,6 +11,10 @@ navbar:
     href: data.html
   - text: About
     href: about.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/euctrl-pru/reproducible-ans-performance-paper
 output:
   workflowr::wflow_html:
     toc: yes
