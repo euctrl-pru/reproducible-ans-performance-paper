@@ -6,3 +6,5 @@ seed: 20190217
 # The working directory to build the R Markdown files. The path is relative to
 # _workflowr.yml. See ?rmarkdown::render for details.
 knit_root_dir: "."
+# Use devtools to generate the session information.
+sessioninfo: "devtools::session_info()"
