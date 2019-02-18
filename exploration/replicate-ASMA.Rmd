@@ -1,0 +1,229 @@
+---
+title: "Replicate ASMA"
+author: "RQ"
+date: "3 January 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+## Introduction
+
+This R Markdown document is an initial stab at replicating the ASMA algorithm on the basis of the data extracted for this study/paper (i.e. ATM Seminar 2019).
+The paper follows the concept of "teaching the computer to do the work". This way a track record of the data manipulation is achieved. In particular the first chapter is based on establishing the analytical data for ASMA. For the paper a subset of arrival flights are extracted from the FACT data tables (i.e. July 2017 for EGLL, EIDW, and LSZH).
+The following sections work with this analytic data and serves as a validation of the trajectory derived data.
+
+## Airport Operator Data Flow & 40NM data - reference data samples
+
+For the determination of the ASMA indicator, the airport operator data flow (providing relevant flight-by-flight movement data) is augmented with a 40NM crossing 4-D position derived from the NM trajectory (i.e. profile 3).
+The associated data is stored in the FACT table in PRISME.
+The following extracts the relevant validation information from the FACT table.
+
+With a view to establish a fully reproducible data sample, the respective FACT table data extraction is provided as "raw" data. 
+
+Note: The locally stored files have been retrieved in early 2018 as part of the international benchmarking. This is outside the scope of this paper.
+
+```{r}
+# utility functions to extract data for ASMA validation data set from FACT tables
+
+# define required data items from FACT table
+# Note: datetimes are not consistently stored in PRISME (some / or -). Thus, we 
+# avoid throwing an error by defining time format with the any-separator, i.e. '%.'.
+data_cols <- cols_only(   # begin pre-defined colums for study
+       AP_C_FLTID = col_character()
+      ,AP_C_REG   = col_character()
+      ,AP_C_ARCTYP= col_character()
+      ,AC_CLASS   = col_character()
+      ,ADEP_ICAO  = col_character()
+      ,ADES_ICAO  = col_character()
+      ,SRC_PHASE  = col_character()
+      ,SCHED_TIME_UTC = col_datetime(format = "%d%.%m%.%Y %H:%M:%S")
+      ,BLOCK_TIME_UTC = col_datetime(format = "%d%.%m%.%Y %H:%M:%S")
+      ,MVT_TIME_UTC  = col_datetime(format = "%d%.%m%.%Y %H:%M:%S")
+      ,AP_C_STND  = col_character()
+      ,AP_C_RWY   = col_character()
+      ,C40_CROSS_TIME = col_datetime(format = "%d%.%m%.%Y %H:%M:%S")
+      ,C40_CROSS_LAT  = col_double()
+      ,C40_CROSS_LON  = col_double()
+      ,C40_CROSS_FL  = col_integer()
+      ,C100_CROSS_TIME = col_datetime(format = "%d%.%m%.%Y %H:%M:%S")
+      ,C100_CROSS_LAT  = col_double()
+      ,C100_CROSS_LON  = col_double()
+      ,C100_CROSS_FL  = col_integer()
+) # end - pre-defined columns
+
+#' read locally stored FACT table
+#'
+#' FACT tables have been extracted from PRISME and stored locally in a
+#' subfolder for all R projects, i.e. __DATA/. In this folder, there is
+#' a subfolder per airport (e.g. EGLL/) with the associated FACT table
+#' for the year.
+#'
+#' @param .apt 4-digit ICAO location indicator (chr string), e.g. "EGLL"
+#' @param .yr  year (int), e.g. 2017
+#' @param .path_to_fact (chr string) for folder & hierarchy
+#'
+#' @return filename (incldg. path)
+#'
+fact_file_name <- function(.apt, .yr, .path_to_fact){
+  fn <- paste(.path_to_fact,"/", .apt,"/", .apt, "_", .yr, "_FACT.txt", sep = "")
+  return(fn)
+}
+
+#' load extracted FACT table with predefined columns (data items)
+#' 
+#' Read in the specified set of data items from extracted FACT tables.
+#'
+#' @param .file_name (path and) filename of file to read
+#' @param .data_cols cols_only() specification for readr::read_csv
+#'
+#' @return tibble of FACT table
+#'
+load_fact_data <- function(.file_name, .data_cols){
+  ds <- readr::read_csv2(.file_name, col_types = .data_cols)
+  return(ds)
+}
+
+#' load study data
+#'
+#' wrapper for defining file name and load of fact table
+#'
+load_data <- function(apt, yr, data_cols, path_to_fact = "../../__DATA/"){
+  fn <- fact_file_name(.apt = apt, .yr = yr, .path_to_fact = path_to_fact)
+  ds <- load_fact_data(.file_name = fn, .data_cols = data_cols)
+  return(ds)
+}
+
+#' prepare loaded data for study
+#'
+#' The loaded data is trimmed for arrivals and the variables get
+#' nicer names
+trim_arrs <- function(ds){
+  ds <- ds %>% dpyr::filter(SRC_PHASE == "ARR") %>%
+    dplyr::select( CALLSIGN = AP_C_FLTID
+           ,REG      = AP_C_REG
+           ,ADEP     = ADEP_ICAO
+           ,ADES     = ADES_ICAO
+           ,ALDT     = MVT_TIME_UTC
+           ,AIBT     = BLOCK_TIME_UTC
+           ,STA      = SCHED_TIME_UTC
+           ,TYP      = AP_C_ARCTYP
+           ,WTC      = AC_CLASS
+           ,C40_TIME = C40_CROSS_TIME
+           ,C40_LAT  = C40_CROSS_LAT
+           ,C40_LON  = C40_CROSS_LON
+           ,C40_ALT  = C40_CROSS_FL
+           )
+  return(ds)
+}
+
+limit_time_horizon <- function(arrs, start = "01-07-2017", end= "31-08-2017"){
+  start <- paste(start, "00:00:00", sep = "")
+  start <- lubridate::dmy_hms(start, tz = "UTC")
+  end   <- paste(end, "23:59:59", sep = "")
+  end   <- lubridate::dmy_hms(end, tz = "UTC")
+  
+  arrs  <- arrs %>% 
+    mutate(HORIZON = ifelse(is.na(AIBT), STA, AIBT)) %>%
+    filter(HORIZON >= start, HORIZON <= end) %>%
+    select(-HORIZON)
+  
+  return(arrs)
+}
+
+```
+
+The following checks for the existance of the validation data sets.
+If the files do not exist, the FACT table will be read and subsetted.
+If the file exists, it will be loaded.
+
+```{r, message=FALSE}
+if(!file.exists("../data/egll_arrs_fact_2017.csv")){
+  egll2017 <- load_data("EGLL", 2017, data_cols) %>% 
+    trim_arrs() %>% 
+    limit_time_horizon()
+  write_csv(egll2017, "../data/egll_arrs_fact_2017.csv")
+}else{
+  egll2017 <- readr::read_csv("../data/egll_arrs_fact_2017.csv")
+}
+
+if(!file.exists("../data/eidw_arrs_fact_2017.csv")){
+  eidw2017 <- load_data("EIDW", 2017, data_cols) %>% 
+    trim_arrs() %>% 
+    limit_time_horizon()
+  write_csv(eidw2017, "../data/eidw_arrs_fact_2017.csv")
+}else{
+  eidw2017 <- readr::read_csv("../data/eidw_arrs_fact_2017.csv")
+}
+
+if(!file.exists("../data/lszh_arrs_fact_2017.csv")){
+  lszh2017 <- load_data("LSZH", 2017, data_cols) %>% 
+    trim_arrs() %>% 
+    limit_time_horizon()
+  write_csv(lszh2017, "../data/lszh_arrs_fact_2017.csv")
+}else{
+  lszh2017 <- readr::read_csv("../data/lszh_arrs_fact_2017.csv")
+}
+```
+
+## Read In Trajectory Derived Data
+
+Based on the trajectory derived data, we construct a "quick-and-dirty" ASMA data set.
+
+```
+To-do: identification of landing runway
+--> we know 'landing end' of trajectory and should be able to determine distance and offset.
+--> (alternatively, we can "steal" the runway from the FACT table)
+
+To-do: enable read-out of xxxx-data.R without package
+```
+
+```{r, message=FALSE}
+path_data <- "../data/" 
+flt_fn    <- "egll_flt_rt_2017-08-01.csv"
+pos_fn    <- "egll_pos_rt_40NM_2017-08-01.csv"
+## need to load library trrrj
+## source("../R/egll-data.R")
+## EGLL ARP := "N51°28.65'", "W0°27.68'"
+## converted with: https://www.directionsmag.com/site/latlong-converter/
+egll_arp = data.frame(APT = "EGLL", PTS = "ARP", LAT = 51.4775, LON = 0.4613333)
+
+flts <- readr::read_csv(paste(path_data, flt_fn, sep = ""))
+poss <- readr::read_csv(paste(path_data, pos_fn, sep = ""))
+
+flts <- left_join(flts, poss, by = "flight_id" ) %>% 
+  select(flight_id, CALLSIGN = callsign, REG = aircraft_reg
+         , TYP = aircraft_type, ADEP = adep, ADES = ades
+         , TIME = timestamp, LAT = latitude, LON = longitude
+         , DIST = distance  # is this the flown distance?
+         , DIST_ARP = distance_arp 
+         ) %>% 
+  mutate(DIST_ARP_NM = DIST_ARP / 1852) %>% # convert to NM
+  filter(DIST_ARP_NM >= 6)   # approx. short final = Gate ~ ALDT
+
+asma_flts <- flts %>% group_by(flight_id, CALLSIGN) %>%
+  summarise( C40_DIST = max(DIST_ARP_NM), C40_TIME = min(TIME)
+            ,GATE_DIST= min(DIST_ARP_NM), GATE_TIME= max(TIME)
+            ) %>% ungroup() %>%
+  left_join(flts, by=c("flight_id", "CALLSIGN", "C40_TIME" = "TIME")
+            ) %>% 
+  mutate(BRG = geosphere::bearing(c(egll_arp$LON, egll_arp$LAT), cbind(LON, LAT))
+         ,C40_BRG = (BRG + 360) %% 360 ) # modulo operation for 360-bearings
+
+```
+
+In order to determine the arrival sector for ASMA, we plot, the C40_BRG:
+
+```{r}
+ggplot(data = asma_flts, mapping = aes(x = C40_BRG)) + 
+  geom_histogram(binwidth = 2)
+```
+
+Next: 
+1. determine entry sectors
+2. calculate travel time per entry sector and type
+3. determine refernce time based on aforemntioned groups (still we need runway)

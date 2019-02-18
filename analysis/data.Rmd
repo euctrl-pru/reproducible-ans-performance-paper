@@ -1,0 +1,12 @@
+---
+title: "Data"
+output:
+  workflowr::wflow_html:
+    toc: false
+---
+
+Here we describe the
+* raw data, i.e. the Reference Trajectory data set
+* pre-processed data, i.e. the extracted arrivals and the transition points.
+
+

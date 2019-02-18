@@ -1,0 +1,19 @@
+name: "atmseminar2019paper"
+output_dir: ../docs
+navbar:
+  title: "Reproducible ANS Performance"
+  left:
+  - text: Home
+    href: index.html
+  - text: Setup
+    href: setup.html
+  - text: Data
+    href: data.html
+  - text: About
+    href: about.html
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    highlight: textmate

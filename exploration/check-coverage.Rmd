@@ -1,0 +1,180 @@
+---
+title: "Checking Completeness"
+author: "RQ & ES"
+date: "4 February 2019"
+output: html_document
+---
+
+```{r, message=FALSE}
+library(readr)
+library(dplyr)
+library(lubridate)
+library(purrr)
+library(ggplot2)
+```
+
+
+## Overview
+
+This RMarkdown document is a quick hack to check the coverage of the ref trajectory data vs APDF.
+
+
+## Read in APDF Data
+
+For this paper we prepared a data set containing the arrivals at London Heathrow and Dublin (and Zurich - tbd)
+
+```{r}
+egll2017 <- read_csv("../data/egll_arrs_fact_2017.csv")
+eidw2017 <- read_csv("../data/eidw_arrs_fact_2017.csv")
+```
+
+```{r}
+start_date = lubridate::dmy_hms("01-08-2017 00:00:00", tz = "UTC")
+end_date   = lubridate::dmy_hms("08-08-2017 23:59:59", tz = "UTC")
+
+trim_time_horizon <- function(arrs, .start_date = start_date, .end_date = end_date){
+  arrs <- arrs %>% mutate(ARR_TIME = ifelse(is.na(AIBT), STA, AIBT)) %>%
+    filter(ARR_TIME >= start_date, ARR_TIME <= end_date) %>%
+    select(-ARR_TIME)
+  return(arrs)
+}
+```
+
+
+## Read In Trajectory Flight Data
+
+Trajectory derived flight data is stored in daily samples.
+
+```{r}
+read_flight_trj <- function(apt, .path = "../data/"){
+  data_path <- .path
+  data_files<- dir(data_path, pattern = paste(apt, "_flt_rt", sep = ""))
+  
+  flts <- data_files %>%
+    map(~ read_csv(file.path(data_path, .),
+      col_types = cols(
+         period_start = col_datetime(format = "")
+        ,period_finish = col_datetime(format = "")
+        ))
+      ) %>%
+    bind_rows()
+  return(flts)
+}
+```
+
+```{r, warning=FALSE}
+egll2017_flt_trj <- read_flight_trj("egll")
+```
+
+
+## Plot Coverage
+
+```{r}
+extract_arrs_fm_trj <- function(ds) {
+  flt_trj <- ds %>% 
+    select(REG = aircraft_reg, TYP = aircraft_type, ADEP = adep, ADES = ades
+           , period_start, period_finish) %>%
+    mutate(ARR_TIME = if_else(!is.na(period_finish), period_finish, period_start)
+          # ,ARR_TIME = as.POSIXct(ARR_TIME, origin = "1970-01-01")
+           ) %>%
+    select(-contains("period"))
+}
+```
+
+
+
+```{r, warning=FALSE}
+egll_arrs_trj <- read_flight_trj("egll") %>% 
+  extract_arrs_fm_trj() %>%
+  mutate(DOF = lubridate::date(ARR_TIME), SOURCE = "TRJ") %>%
+  filter(ARR_TIME <= end_date)
+
+egll_arrs_apdf <- egll2017 %>% trim_time_horizon() %>% 
+  mutate(ARR_TIME = if_else(!is.na(AIBT), AIBT, STA) 
+         , DOF = lubridate::date(ARR_TIME),SOURCE = "APDF")%>% 
+  select(REG, ADEP, ADES, ARR_TIME, DOF, SOURCE)
+```
+
+```{r}
+tmp <- bind_rows( egll_arrs_trj, egll_arrs_apdf) 
+    
+ggplot(tmp, mapping = aes(x = factor(DOF), group = SOURCE, fill = SOURCE)) + geom_bar(position = "dodge")
+```
+
+```{r}
+egll_arrs_trj %>% group_by(REG, DOF) %>% summarise(N = n()) %>% arrange(desc(N))
+```
+
+
+```{r}
+tmp <- bind_rows( egll_arrs_trj %>% na.omit, egll_arrs_apdf) 
+    
+ggplot(tmp, mapping = aes(x = factor(DOF), group = SOURCE, fill = SOURCE)) + geom_bar(position = "dodge")
+```
+
+
+
+# Dublin EIDW
+
+```{r, warning=FALSE}
+eidw_arrs_trj <- read_flight_trj("eidw") %>% 
+  extract_arrs_fm_trj() %>%
+  mutate(DOF = lubridate::date(ARR_TIME), SOURCE = "TRJ") %>%
+  filter(ARR_TIME <= end_date)
+
+eidw_arrs_apdf <-  read_csv("../data/eidw_arrs_fact_2017.csv") %>% trim_time_horizon() %>% 
+  mutate(ARR_TIME = if_else(!is.na(AIBT), AIBT, STA) 
+         , DOF = lubridate::date(ARR_TIME),SOURCE = "APDF")%>% 
+  select(REG, ADEP, ADES, ARR_TIME, DOF, SOURCE)
+```
+
+```{r}
+tmp <- bind_rows( eidw_arrs_trj %>% na.omit, eidw_arrs_apdf) 
+    
+ggplot(tmp, mapping = aes(x = factor(DOF), group = SOURCE, fill = SOURCE)) + 
+  geom_bar(position = "dodge")
+```
+
+
+## Export 
+
+The aforementioned data processing is now wrapped into utility functions and ported to asma.R.
+```{r}
+rm(list = ls())  # reset to empty working environment
+source("../R/asma.R")
+```
+
+```{r, warning=FALSE}
+# load data sets
+egll_arrs_apdf <- read_arrs_apdf("egll", .path = "../data/")
+egll_arrs_trj  <- read_flts_trj( "egll", .path = "../data/")
+
+# prepare coverage data set
+egll_cov_apdf <- egll_arrs_apdf %>% prep_cov_apdf()
+egll_cov_trj  <- egll_arrs_trj %>% prep_cov_trj()
+```
+
+```{r}
+tmp <- bind_rows(egll_cov_apdf, egll_cov_trj) %>%
+         trim_time_horizon %>% na.omit
+
+ggplot(data = tmp
+       ,mapping = aes(x = factor(DOF), fill = SOURCE)
+       ) +
+  geom_bar(position = "dodge") + 
+  theme_bw()
+```
+```{r}
+cov_tbl <- tmp %>% group_by(SOURCE, DOF) %>%
+  summarise(N_ARR = n()) %>%
+  tidyr::spread(SOURCE, N_ARR) %>%
+  mutate(COV = (RTRJ - APDF)/APDF)
+```
+```{r}
+knitr::kable(cov_tbl)
+```
+
+
+
+
+

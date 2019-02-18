@@ -1,0 +1,115 @@
+---
+title: "Untitled"
+author: "RQ"
+date: "11 February 2019"
+output: html_document
+---
+
+Quick hack to augment study with a heuristic approach to identifying landing runway.
+
+```{r}
+library(tidyverse)
+source("../R/asma.R")
+#source("../R/egll-data.R")  # throws: Error in library(trrrj) : there is no package called ‘trrrj’
+```
+```{r}
+# paste and copy EGLL data
+egll_apt <- tibble::tribble(
+     ~latitude,  ~longitude, ~elevation,  ~icao,          ~id, ~type,        ~name,
+  "N51°28.65'", "W0°27.68'",       83.0, "EGLL",       "EGLL", "ARP",   "EGLL ARP",
+  "N51°28.65'", "W0°29.10'",         79, "EGLL", "RWY09L/27R", "RWY", "Runway 09L",
+  "N51°28.66'", "W0°26.00'",         78, "EGLL", "RWY09L/27R", "RWY", "Runway 27R",
+  "N51°27.89'", "W0°28.94'",         75, "EGLL", "RWY09R/27L", "RWY", "Runway 09R",
+  "N51°27.90'", "W0°26.04'",         77, "EGLL", "RWY09R/27L", "RWY", "Runway 27L"
+)
+```
+
+## damn ... in degree, minute decimal notation ==> do it by hand!
+
+
+
+```{r, message=FALSE}
+egll_pts <- read_pts_trj("egll", .path = "../data/") %>%
+  filter(type %in% c("P40", "PLAND"))
+```
+
+```{r}
+ggplot(data = egll_pts, mapping = aes(x = latitude, y = longitude, colour = type)) +
+  geom_point()
+```
+
+```{r}
+tmp <- egll_pts %>% filter(type == "PLAND", distance_arp <= 5) %>%
+  mutate(RWY_BRG = cut(bearing, breaks = c(0,58, 180, 280, 360)))
+
+# note: bearings are from point to ARP!
+# 0,58 --> 09R
+#(58,180] -->09L
+#(180,280] --> 27R
+#(280,360] --> 27L
+
+egll_arp <- data.frame(longitude = -0.461389, latitude = 51.4775, type = "ARP", RWY_BRG = NA)   
+
+ggplot(data = tmp , mapping = aes(x = longitude, y = latitude, colour = RWY_BRG)) +
+  geom_point() +
+  geom_point(data = egll_arp, mapping = aes(size = 6))
+```
+
+
+
+
+What is wrong with the bearings for ASMA sectors?
+
+```{r, message=FALSE}
+egll_pts <- read_pts_trj("egll", .path = "../data/") %>%
+  filter(type %in% c("P40", "PLAND"))
+```
+
+```{r}
+my_ids <- c(egll_pts$flight_id[1], egll_pts$flight_id[17], egll_pts$flight_id[1723])
+
+ggplot(data = egll_pts %>% filter(flight_id %in% my_ids)
+       ,mapping = aes(x = longitude, y = latitude, colour = type)) +
+  geom_point() + 
+  geom_text(aes(label=bearing),hjust=0, vjust=0) +
+  geom_text(aes(label=ifelse(bearing < 180, bearing + 180, bearing - 180)),hjust = -0.1 , vjust = 0.9, colour = "blue")
+  ## ARP
+  geom_point(data = egll_arp)
+  
+# bearing TO STATION == QDM !!!
+```
+
+Apply heuristic to EIDW
+
+```{r, message=FALSE}
+eidw_pts <- read_pts_trj("eidw", .path = "../data/") %>%
+  filter(type %in% c("P40", "PLAND"))
+```
+
+```{r}
+ggplot(data = eidw_pts, mapping = aes(x = latitude, y = longitude, colour = type)) +
+  geom_point()
+```
+
+```{r}
+# EIDW ARP
+arp <- data.frame(longitude = -6.27, latitude = 53.421389, type = "ARP", RWY_BRG = NA)   
+
+# note: bearings are from point to ARP!
+# 0,160 --> 10
+#(160,210] --> 16
+#(210,260] --> 34
+#(260,360] --> 28
+
+tmp <- eidw_pts %>% filter(type == "PLAND", distance_arp <= 5) %>%
+  mutate(RWY_BRG = cut(bearing, breaks = c(0,160,210,260, 360)))
+
+
+
+
+ggplot(data = tmp , mapping = aes(x = longitude, y = latitude
+                                  , colour = RWY_BRG
+                                  )   ) +
+  geom_point() +
+  geom_point(data = arp, mapping = aes(size = 6), colour = "white")
+```

@@ -1,0 +1,95 @@
+---
+title: "ASMA Reference Table"
+author: "RQ"
+date: "11 February 2019"
+output: html_document
+---
+
+This RMarkdown script documents the data preparatory action to trim the ASMA Reference Table for this study.
+
+It broadly 
+
+* reads in the ASMA REF TABLE
+* subsets for the study airports, i.e. EGLL, EIDW, and LSZH
+* corrects for the sector spanning the northerly bearing of 360
+* writes out the reference table for this study
+
+
+## Extracting the ASMA Reference Table
+
+The ASMA Reference Table is extracted from PRISME with the following SQL code.
+Note: This is done by hand, i.e. files saved locally, as the ROracle interface could not be used.
+Conceptually, the reference table will be made available to the public.
+
+
+## Reading in and Subsetting the ASMA Reference Table 
+
+```{r, message=FALSE}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+```
+```{r, message=FALSE}
+study_apts <- c("EGLL", "EIDW", "LSZH")
+
+asma_refs <- readr::read_csv2("../data/ASMA_REF_20190201.csv") 
+
+asma_refs <- asma_refs %>%
+  filter(AIRPORT %in% study_apts & ASMA_RADIUS == 40) %>% 
+  group_by(AIRPORT) %>%
+  filter(VERSION == max(VERSION)) 
+
+asma_refs <- asma_refs %>% group_by(AIRPORT, VERSION, ASMA_RADIUS) %>%
+  tidyr::nest()
+```
+
+  
+  
+```{r}
+# utility function checks if Bearing spans over North, i.e. 360.
+# if condition holds, the range will be broken down into 2 sets
+# a.) bearing to 360, and b.) 0 to end of span.
+# all other values can stay the same, e.g. ASMA Sector, Unimpeded Time
+# the changes rows will be merged to the data set
+check_north_span <- function(ds){
+  new_rows <- ds %>% group_by(AC_CLASS, RUNWAY) %>% 
+    filter(FROM_BEARING == max(FROM_BEARING), !is.na(UNIMPEDED_TIME)) %>% 
+    mutate(NORTH = TO_BEARING < FROM_BEARING ) %>% filter( NORTH)
+  
+  if(nrow(new_rows) >= 0){ message("correct for spanning north!")
+    tmp1 <- new_rows %>%
+      mutate(TO_BEARING = 360)
+    tmp2 <- new_rows %>%
+      mutate(FROM_BEARING = 0)
+    
+    ds <- anti_join(ds, new_rows) %>% bind_rows(tmp1) %>% bind_rows(tmp2)
+  }else{
+    message("ASMA sectors not spanning North!")
+  }
+  ds <- ds %>% select(-NORTH)
+  return(ds)
+}
+
+# test for one case: tmp <- asma_refs$data[[1]] %>% check_north_span()
+# apply to multiple cases
+asma_refs <- asma_refs %>% mutate(REF = purrr::map(data, ~ check_north_span(.x)))
+
+refs <- asma_refs %>% select(AIRPORT, VERSION, ASMA_RADIUS, REF) %>%
+  tidyr::unnest() %>%
+  select(AIRPORT, VERSION, ASMA_RADIUS, AC_CLASS, RUNWAY, ASMA_SECTOR, FROM_BEARING, TO_BEARING, UNIMPEDED_TIME) %>%
+  arrange(AIRPORT, VERSION, ASMA_RADIUS, AC_CLASS, RUNWAY, ASMA_SECTOR)
+```
+
+Write out reference table for ATM Seminar paper.
+
+```{r}
+if(!file.exists("../data/ASMA_REF.csv")){
+  message("Writing out trimmed refernce table for paper!")
+  readr::write_csv(refs, "../data/ASMA_REF.csv")
+}else{
+  warning("Reference Table for paper already exists - stopping to write out!")
+}
+```
+
+

@@ -1,0 +1,26 @@
+---
+title: "R Markdown example"
+author: "John Doe"
+date: "2019-02-17"
+output: html_document
+---
+Some math 
+$\frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2$,
+followed by numbered list:
+  
+1. *italics* and **bold** text
+1. then bullets
+    - simple, eh?
+
+and a code chunk:
+
+```{r, out.width='100%'}
+library(ggplot2)
+fit = lm(mpg ~ wt, data = mtcars)
+b   = coef(fit)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + 
+  geom_smooth(method = lm, se = TRUE)
+```
+
+The slope of the regression is `r b[2]`.

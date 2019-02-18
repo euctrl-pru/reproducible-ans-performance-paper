@@ -1,0 +1,46 @@
+---
+title: "Setup"
+output:
+  workflowr::wflow_html:
+    toc: false
+---
+
+This RMarkdown describes the setup of the R/RStudio environment needed to reproduce the paper.
+
+## Reproduce the paper
+
+The analysis and production of this paper make use of a number of R packages, which need to be
+installed and functioning:
+
+* `tinytex`
+  ```{r, eval=FALSE}
+  devtools::install_github('yihui/tinytex')
+  tinytex::install_tinytex()
+  ```
+
+* `rticles`: from [`rstudio`](https://github.com/rstudio/rticles) if
+  [PR #207](https://github.com/rstudio/rticles/pull/207) has been merged,
+  otherwise from [`espinielli`'s branch](https://github.com/espinielli/rticles/tree/add-support-keywords)
+
+* `tidyverse` and `sf`
+  ```{r, eval=FALSE}
+  install.packages(c("tidyverse", "sf"))
+  ```
+
+* install IEEE Transaction LaTeX style:
+    ```{r, eval=FALSE}
+    tinytex::tlmgr_install("IEEEtran")
+    ```
+
+* in order to overcome the missing small caps fonts (this needs to be done once):
+  1. uncomment `\usepackage{times}` in `header.tex`
+  2. knit `paper.Rmd`
+  3. comment again `\usepackage{times}` in `header.tex`
+
+You should now be in the position to knit `paper.Rmd` and obtain `paper.pdf`.
+
+
+
+## Issues
+  
+  * References on second or more line not correctly indented. (maybe re-try BibLaTeX)
