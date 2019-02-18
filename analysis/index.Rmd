@@ -11,4 +11,8 @@ the paper on Reproducible ANS Performance.
 The aim of this repository is to make it possible to fully reproduce our analysis
 and results.
 
+All text, data and code is avasilable on GitHub at [https://github.com/euctrl-pru/reproducible-ans-performance-paper][rapp]
+
+
+[rapp]: <https://github.com/euctrl-pru/reproducible-ans-performance-paper> "Reproducible ANS Performance paper repo"
 
