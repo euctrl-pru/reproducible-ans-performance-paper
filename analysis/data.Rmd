@@ -32,7 +32,7 @@ flight and position files from your browser or by using Google `gsutil` as follo
 $ pyenv activate anaconda2-4.2.0
 $ cd data-raw
 $ gsutil cp \
-    gs://pru-trajectories/sources/merged/overnight_cpr_fr24/raw_cpr_fr24_positions_2017-08-08.csv.bz2 .
+    gs://pru-trajectories/products/synth_positions/cpr_fr24/mas_05_cpr_fr24_synth_positions_2017-08-03.csv.bz2 .
 ```
 
 As explained in the paper, you can use `R/extract-arrivals.R` to produce CSV files
