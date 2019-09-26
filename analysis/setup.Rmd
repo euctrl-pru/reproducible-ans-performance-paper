@@ -19,8 +19,14 @@ installed and functioning:
   ```
 
 * `rticles`: from [`rstudio`](https://github.com/rstudio/rticles) if
-  [PR #207](https://github.com/rstudio/rticles/pull/207) has been merged,
-  otherwise from [`espinielli`'s branch](https://github.com/espinielli/rticles/tree/add-support-keywords)
+  [PR #247](https://github.com/rstudio/rticles/pull/247) has been merged
+  ```{r, eval=FALSE}
+  install.packages("rticles")
+  ```
+  otherwise directly from [PR #247](https://github.com/rstudio/rticles/pull/247)
+  ```{r, eval=FALSE}
+  remotes::install_github("rstudio/rticles#247")
+  ```
 
 * `tidyverse` and `sf`
   ```{r, eval=FALSE}
@@ -43,4 +49,4 @@ You should now be in the position to knit `paper.Rmd` and obtain `paper.pdf`.
 
 ## Issues
   
-  * References on second or more line not correctly indented. (maybe re-try BibLaTeX)
+  * References on second and subsequent lines not correctly indented.
