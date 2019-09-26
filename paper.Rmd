@@ -5,8 +5,8 @@ author:
 - Rainer Koelle
 date: "`r format(Sys.time(), '%a %b %d %Y @  %X')`"
 output:
-  rticles::ieee_article:
-    base_format: bookdown::pdf_book
+  bookdown::pdf_book:
+    base_format: rticles::ieee_article
     fig_caption: no
     includes:
       in_header: header.tex
@@ -17,14 +17,10 @@ output:
     with_dblfloatfix: no
     with_subfig: no
   html_document: default
-  word_document:
-    toc: no
 bibliography: references.bib
-# biblatex: true
 color-links: yes
 csl: ieee-transactions-on-aerospace-and-electronic-systems.csl
 affiliation:
-  # author-columnar: yes
   institution-columnar: true
   institution:
   - author:
@@ -44,13 +40,28 @@ keywords:
 link-citations: yes
 author-meta: Enrico Spinielli, Rainer Koelle
 papersize: a4paper
-abstract: |
-  Air transportation is undergoing a fundamental transformation. On the political, strategic, and operational level work is directed to meet the future growth of air traffic.
-  To meet this goal, operational concepts and technological enablers are deployed with the promises of distinct performance improvements. These improvements are typically widely marketed, however, the underlying evidence is not made available. From that respect Air Navigation System Performance suffers from the same credibility crisis seen in other industries. 
-  This paper implements the reproducibility paradigm by providing data, code, and results openly to enable another researcher or analyst to reproduce - and potentially - improve or build on our work. This work is part of a wider thread to establish Open Data and Open Source based data analytical capabilities for Air Navigation System Performance in Europe.
-  The implementation of the paradigm is demonstrated on the basis of the performance reference trajectory by replicating a classical performance measure, and then moving into investigating the application of trajectory based information for enhancing the current state of performance monitoring for the arrival phase. This paper applies the concept and approach as an use case analysis for 2 European airports with different strategies for sequencing arrival traffic (i.e. stack holding and point merge).
-  The work reported demonstrates the feasibility of the approach and reflects a stepping stone in the roll-out of the performance reference trajectory within the European context. The work also builds the basis for novel developments on the basis of the implemented reproducibility workflow as this paper is accompanied by a webpage that supports the impartial evaluation of the work by providing the data, code, and how this reports had been produced.
-  
+abstract: "Air transportation is undergoing a fundamental transformation. On the political,
+  strategic, and operational level work is directed to meet the future growth of air
+  traffic.\nTo meet this goal, operational concepts and technological enablers are
+  deployed with the promises of distinct performance improvements. These improvements
+  are typically widely marketed, however, the underlying evidence is not made available.
+  From that respect Air Navigation System Performance suffers from the same credibility
+  crisis seen in other industries. \nThis paper implements the reproducibility paradigm
+  by providing data, code, and results openly to enable another researcher or analyst
+  to reproduce - and potentially - improve or build on our work. This work is part
+  of a wider thread to establish Open Data and Open Source based data analytical capabilities
+  for Air Navigation System Performance in Europe.\nThe implementation of the paradigm
+  is demonstrated on the basis of the performance reference trajectory by replicating
+  a classical performance measure, and then moving into investigating the application
+  of trajectory based information for enhancing the current state of performance monitoring
+  for the arrival phase. This paper applies the concept and approach as an use case
+  analysis for 2 European airports with different strategies for sequencing arrival
+  traffic (i.e. stack holding and point merge).\nThe work reported demonstrates the
+  feasibility of the approach and reflects a stepping stone in the roll-out of the
+  performance reference trajectory within the European context. The work also builds
+  the basis for novel developments on the basis of the implemented reproducibility
+  workflow as this paper is accompanied by a webpage that supports the impartial evaluation
+  of the work by providing the data, code, and how this reports had been produced.\n"
 title-meta: Busting the Myth! - Reproducibility in ANS Performance
 ---
 
