@@ -3,3 +3,7 @@
 .RData
 .Ruserdata
 data-raw/*
+paper.pdf
+paper.tex
+paper.log
+paper_files/*
