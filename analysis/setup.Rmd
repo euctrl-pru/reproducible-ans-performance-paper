@@ -19,13 +19,13 @@ installed and functioning:
   ```
 
 * `rticles`: from [`rstudio`](https://github.com/rstudio/rticles) if
-  [PR #247](https://github.com/rstudio/rticles/pull/247) has been merged
+  [PR #247](https://github.com/rstudio/rticles/pull/247) has been merged and released on CRAN
   ```{r, eval=FALSE}
   install.packages("rticles")
   ```
-  otherwise directly from [PR #247](https://github.com/rstudio/rticles/pull/247)
+  otherwise directly from [Github](https://github.com/rstudio/rticles/)
   ```{r, eval=FALSE}
-  remotes::install_github("rstudio/rticles#247")
+  remotes::install_github("rstudio/rticles")
   ```
 
 * `tidyverse` and `sf`
