@@ -14,6 +14,8 @@ wflow_build()
 ```
 
 This will 
+
+
 1. generate the relevant HTML pages in `docs` out of the R markdown files in the `analysis`
    directory.
 1. preview the website in the Viewer panel in RStudio
