@@ -21,15 +21,18 @@ library(geosphere)
 library(rlang)
 library(stringr)
 library(fs)
+library(vroom)
 
 source(here::here("R", "utils.R"))
 
 days_of_data <- c(
-  "2017-08-03"
+  "2017-08-06",
+  "2017-08-07",
+  "2017-08-08"
 )
 
 apts <- c(
-  "eidw",
+  # "eidw",
   "egll")
 
 
@@ -86,6 +89,12 @@ poss_for_apt_on_date <- function(apt, date) {
 purrr::pwalk(
   tidyr::crossing(apts, days_of_data),
   ~ poss_for_apt_on_date(.x, .y))
+
+
+######################### SMOOTH #####################
+purrr::walk(
+  fs::dir_ls("data", regexp = "egll_pos_rt_.*-0[6-8]_raw.csv"),
+  ~ smooth_arrival_trajectories(.x))
 
 
 # extract positions at nm nautical miles for arrivals

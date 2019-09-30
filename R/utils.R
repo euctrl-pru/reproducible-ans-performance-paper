@@ -109,7 +109,7 @@ extract_arrival_flights <- function(rawdatafile, apt, prefix = "flt_rt") {
 #'              in the `rawdatafile` name
 #' @return a data frame
 #'
-extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_rt") {
+extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_rt", postfix = "raw") {
   if(!fs::file_exists(rawdatafile)) {
     stop(paste0("Error: file", rawdatafile, " does not exist."))
   }
@@ -119,7 +119,7 @@ extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_
     stringr::str_split("_") %>% `[[`(1) %>% dplyr::last()
   apt_lower <- apt %>% tolower()
   apt_upper <- apt %>% toupper()
-  file <- stringr::str_glue(apt_lower, prefix, data_date, .sep = "_") %>%
+  file <- stringr::str_glue(apt_lower, prefix, data_date, postfix, .sep = "_") %>%
     fs::path_ext_set("csv")
   file <- fs::path_join(c(here::here(), "data", file))
 
@@ -152,6 +152,43 @@ extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_
            distance_arp) %>%
     write_csv(file)
 }
+
+
+# smooth trajectories
+smooth_arrival_trajectories <- function(rawdatafile, size = 5) {
+  if(!fs::file_exists(rawdatafile)) {
+    stop(paste0("Error: file", rawdatafile, " does not exist."))
+  }
+  file <- stringr::str_remove(rawdatafile, "_raw")
+  c <- cols(
+    flight_id = col_character(),
+    timestamp = col_datetime(format = ""),
+    latitude = col_double(),
+    longitude = col_double(),
+    altitude = col_integer(),
+    speed_gnd = col_double(),
+    track_gnd = col_double(),
+    vert_speed = col_double(),
+    on_ground = col_logical(),
+    distance = col_double(),
+    distance_arp = col_double(),
+    sequence_number = col_integer()
+  )
+
+  # RT trajectories
+  vroom(rawdatafile, col_types = c) %>%
+    dplyr::add_count(flight_id) %>%
+    dplyr::arrange(timestamp) %>%
+    dplyr::filter(n >= 3) %>%
+    dplyr::mutate_at(.vars = c("longitude", "latitude", "altitude"),
+                     .funs = ~ zoo::rollmean(.x,
+                                             k = size,
+                                             fill = c("extend", "extend", "extend"))) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-n) %>%
+    readr::write_csv(file)
+}
+
 
 
 # filter by distance from point
