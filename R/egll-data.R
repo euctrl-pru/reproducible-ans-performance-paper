@@ -71,12 +71,12 @@ library(sf)
 # 000° 26' 50.00" W
 
 egll_apt <- tibble::tribble(
-     ~latitude,  ~longitude, ~elevation,  ~icao,          ~id, ~type,        ~name,
-  "N51°28.65'", "W0°27.68'",       83.0, "EGLL",       "EGLL", "ARP",   "EGLL ARP",
-  "N51°28.65'", "W0°29.10'",         79, "EGLL", "RWY09L/27R", "RWY", "Runway 09L",
-  "N51°28.66'", "W0°26.00'",         78, "EGLL", "RWY09L/27R", "RWY", "Runway 27R",
-  "N51°27.89'", "W0°28.94'",         75, "EGLL", "RWY09R/27L", "RWY", "Runway 09R",
-  "N51°27.90'", "W0°26.04'",         77, "EGLL", "RWY09R/27L", "RWY", "Runway 27L"
+     ~latitude,  ~longitude, ~elevation, ~heading,  ~icao,          ~id, ~type,        ~name,
+  "N51°28.65'", "W0°27.68'",       83.0,       NA, "EGLL",       "EGLL", "ARP",   "EGLL ARP",
+  "N51°28.65'", "W0°29.10'",         79,       91, "EGLL", "RWY09L/27R", "RWY", "Runway 09L",
+  "N51°28.66'", "W0°26.00'",         78,      271, "EGLL", "RWY09L/27R", "RWY", "Runway 27R",
+  "N51°27.89'", "W0°28.94'",         75,       91, "EGLL", "RWY09R/27L", "RWY", "Runway 09R",
+  "N51°27.90'", "W0°26.04'",         77,      271, "EGLL", "RWY09R/27L", "RWY", "Runway 27L"
 ) %>%
   dplyr::mutate(latitude = ddm2dd(latitude), longitude = ddm2dd(longitude))
 

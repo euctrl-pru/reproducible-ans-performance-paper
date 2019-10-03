@@ -23,19 +23,28 @@ library(stringr)
 library(fs)
 library(vroom)
 
-source(here::here("R", "utils.R"))
+source(here::here("R", "utils.R"), encoding = 'UTF-8', local = TRUE)
 
 days_of_data <- c(
+  "2017-08-01",
+  "2017-08-02",
+  "2017-08-03",
+  "2017-08-04",
+  "2017-08-05",
   "2017-08-06",
   "2017-08-07",
   "2017-08-08"
 )
 
 apts <- c(
-  # "eidw",
-  "egll")
+  "lszh",
+  "eidw",
+  "egll"
+)
 
+################ EXTRACT ARRIVALS #################
 
+######### Extract Flights #######
 # extract flights arrivals at airport apt on date
 flts_for_apt_on_date <- function(apt, date) {
   flights_bz2 <- fs::path(
@@ -49,7 +58,7 @@ purrr::pwalk(
   tidyr::crossing(apts, days_of_data),
   ~ flts_for_apt_on_date(.x, .y))
 
-
+############ Extract positions ###########
 # extract position reports for flight arrivals at airport apt on date
 poss_for_apt_on_date <- function(apt, date) {
   flights_apt_csv <- fs::path(
@@ -62,7 +71,9 @@ poss_for_apt_on_date <- function(apt, date) {
   source(
     here::here(
       "R",
-      stringr::str_glue("{apt}-data.R", apt = apt)))
+      stringr::str_glue("{apt}-data.R", apt = apt)),
+    encoding = 'UTF-8',
+    local = TRUE)
   apt_data <- get(paste0(apt, "_apt"))
   arp <- get(paste0(apt, "_arp"))
   arp <- c(arp$longitude, arp$latitude)
@@ -73,9 +84,6 @@ poss_for_apt_on_date <- function(apt, date) {
       "mas_05_cpr_fr24_synth_positions_{d}",
       d = date),
     ext = "csv.bz2")
-
-  # bunzip2
-  #R.utils::bunzip2(bz2file, csvfile, remove = FALSE, skip = TRUE)
 
   poss_csv <- fs::path_ext_remove(poss_bz2)
 
@@ -91,15 +99,26 @@ purrr::pwalk(
   ~ poss_for_apt_on_date(.x, .y))
 
 
-######################### SMOOTH #####################
+#################### SMOOTH #####################
 purrr::walk(
-  fs::dir_ls("data", regexp = "egll_pos_rt_.*-0[6-8]_raw.csv"),
+  fs::dir_ls("data", regexp = ".*_pos_rt_.*-0.*_raw.csv"),
   ~ smooth_arrival_trajectories(.x))
 
 
+######################## EXTRACT at 40NM #####################
 # extract positions at nm nautical miles for arrivals
 # at airport apt on date
 poss_for_apt_on_date_within <- function(apt, date, nm = 40) {
+  source(
+    here::here(
+      "R",
+      stringr::str_glue("{apt}-data.R", apt = apt)),
+    encoding = 'UTF-8',
+    local = TRUE)
+  apt_data <- get(paste0(apt, "_apt"))
+  arp <- get(paste0(apt, "_arp"))
+  arp <- c(arp$longitude, arp$latitude)
+
   here::here(
     "data",
     str_glue("{apt}_pos_rt_{d}.csv", apt = apt, d = date)

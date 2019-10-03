@@ -63,9 +63,23 @@ extract_airport_distance <- function(rawdatafile, arp, distance) {
     fs::path_ext_set("csv")
   file <- fs::path_join(c(here::here(), "data", file))
 
+  cols <- cols(
+    flight_id = col_character(),
+    timestamp = col_datetime(format = ""),
+    latitude = col_double(),
+    longitude = col_double(),
+    altitude = col_double(),
+    speed_gnd = col_double(),
+    track_gnd = col_double(),
+    vert_speed = col_double(),
+    on_ground = col_logical(),
+    distance = col_double(),
+    distance_arp = col_double(),
+    sequence_number = col_double()
+  )
   d <- distance * 1852
   rawdatafile %>%
-    readr::read_csv() %>%
+    readr::read_csv(col_types = cols) %>%
     dplyr::filter(distance_arp <= d) %>%
     readr::write_csv(file)
 }
@@ -99,7 +113,7 @@ extract_arrival_flights <- function(rawdatafile, apt, prefix = "flt_rt") {
 
 #' extract positions for airport
 #'
-#' @param rawdatafile reference trajectory file
+#' @param rawdatafile reference trajectory bzipped file
 #' @param apt airport, i.e. "egll"
 #' @param arp airport reference point (lon/lat), i.e. `c(-0.461389, 51.4775)`
 #' @param ids flight ids to keep
@@ -107,11 +121,14 @@ extract_arrival_flights <- function(rawdatafile, apt, prefix = "flt_rt") {
 #'              The default will result in filename
 #'              egll_pos_rt_<date>.csv where <date> is extracted from the date portion
 #'              in the `rawdatafile` name
+#' @param postfix string for filename, default "raw".
 #' @return a data frame
 #'
 extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_rt", postfix = "raw") {
-  if(!fs::file_exists(rawdatafile)) {
-    stop(paste0("Error: file", rawdatafile, " does not exist."))
+  pp <- paste0(rawdatafile, ".bz2")
+
+  if(!fs::file_exists(pp)) {
+    stop(paste0("Error: file", pp, " does not exist."))
   }
   data_date <- rawdatafile %>%
     fs::path_file() %>%
@@ -121,10 +138,10 @@ extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_
   apt_upper <- apt %>% toupper()
   file <- stringr::str_glue(apt_lower, prefix, data_date, postfix, .sep = "_") %>%
     fs::path_ext_set("csv")
-  file <- fs::path_join(c(here::here(), "data", file))
+  file <- here::here("data", file)
 
   # filter by flight ID
-  filter1 <- function(x, arp, ids) {
+  filter1 <- function(x, pos, ids) {
     x %>%
       dplyr::filter(FLIGHT_ID %in% ids)
   }
@@ -132,7 +149,9 @@ extract_arrival_positions <- function(rawdatafile, apt, arp, ids, prefix = "pos_
 
   # get all arrivals
   read_csv_chunked(
-    rawdatafile, DataFrameCallback$new(partial1),
+    # use connection pipe to unzip on-the-fly
+    bzfile(pp),
+    DataFrameCallback$new(partial1),
     chunk_size = 5000) %>%
     rename_all(tolower) %>%
     rename(timestamp = time,

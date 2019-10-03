@@ -7,7 +7,7 @@ library(stringr)
 date_of_interest <- "2017-08-01"
 
 # get airport relevant details
-source(here::here("R", "egll-data.R"))
+source(here::here("R", "egll-data.R"), encoding = 'UTF-8', local = TRUE)
 arp <- get("egll_arp")
 
 # use st_buffer to enlarge the "manually" defined holding polygons

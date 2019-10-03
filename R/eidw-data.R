@@ -4,7 +4,7 @@ library(sf)
 
 # do not use trrrj yet, just copied needed functions in utils.R ...
 # library(trrrj)
-#source(here::here("R", "utils.R"))
+#source(here::here("R", "utils.R"), encoding = 'UTF-8', local = TRUE)
 
 ######### Airport Reference Point
 # Dublin (from https://skyvector.com/airport/EIDW/Dublin-Airport )

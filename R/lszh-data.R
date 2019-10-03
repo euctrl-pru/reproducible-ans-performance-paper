@@ -1,3 +1,6 @@
+library(tibble)
+library(dplyr)
+library(sf)
 
 ######### Airport Reference Point
 # Zurich ( from https://skyvector.com/airport/LSZH/Zurich-Airport )
@@ -37,14 +40,14 @@
 
 
 lszh_apt <- tribble(
-  ~latitude,  ~longitude, ~elevation,  ~icao,          ~id, ~type,        ~name,
-  "N47°27.48'", "E8°32.88'",       1417, "LSZH",       "LSZH", "ARP",   "LSZH ARP",
-  "N47°28.54'", "E8°32.16'",       1390, "LSZH",   "RWY16/34", "RWY", "Runway 16",
-  "N47°26.96'", "E8°33.25'",       1388, "LSZH",   "RWY16/34", "RWY", "Runway 34",
-  "N47°28.93'", "E8°32.16'",       1402, "LSZH",   "RWY14/32", "RWY", "Runway 14",
-  "N47°27.68'", "E8°33.87'",       1402, "LSZH",   "RWY14/32", "RWY", "Runway 32",
-  "N47°27.54'", "E8°32.25'",       1391, "LSZH",   "RWY10/28", "RWY", "Runway 10",
-  "N47°27.40'", "E8°34.23'",       1416, "LSZH",   "RWY10/38", "RWY", "Runway 28"
+  ~latitude,     ~longitude, ~elevation, ~heading,  ~icao,          ~id, ~type,        ~name,
+  "N47°27.48'", "E8°32.88'",       1417,       NA, "LSZH",       "LSZH", "ARP",   "LSZH ARP",
+  "N47°28.54'", "E8°32.16'",       1390,      154, "LSZH",   "RWY16/34", "RWY", "Runway 16",
+  "N47°26.96'", "E8°33.25'",       1388,      334, "LSZH",   "RWY16/34", "RWY", "Runway 34",
+  "N47°28.93'", "E8°32.16'",       1402,      136, "LSZH",   "RWY14/32", "RWY", "Runway 14",
+  "N47°27.68'", "E8°33.87'",       1402,      316, "LSZH",   "RWY14/32", "RWY", "Runway 32",
+  "N47°27.54'", "E8°32.25'",       1391,       95, "LSZH",   "RWY10/28", "RWY", "Runway 10",
+  "N47°27.40'", "E8°34.23'",       1416,      275, "LSZH",   "RWY10/38", "RWY", "Runway 28"
 ) %>%
   dplyr::mutate(latitude = trrrj::ddm2dd(latitude), longitude = trrrj::ddm2dd(longitude))
 
