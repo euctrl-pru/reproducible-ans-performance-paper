@@ -101,8 +101,8 @@ purrr::pwalk(
 
 #################### SMOOTH #####################
 purrr::walk(
-  fs::dir_ls("data", regexp = ".*_pos_rt_.*-0.*_raw.csv"),
-  ~ smooth_arrival_trajectories(.x))
+  fs::dir_ls("data", regexp = ".*_pos_rt_.*-0._raw.csv"),
+  ~ smooth_arrival_trajectories(.x, size = 17))
 
 
 ######################## EXTRACT at 40NM #####################
@@ -125,6 +125,7 @@ poss_for_apt_on_date_within <- function(apt, date, nm = 40) {
   ) %>%
     extract_airport_distance(arp, nm)
 }
+
 
 purrr::pwalk(
   tidyr::crossing(apts, days_of_data),

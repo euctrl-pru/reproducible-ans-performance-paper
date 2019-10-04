@@ -122,7 +122,7 @@ for (apt in apts) {
     #'
     #' @return A data frame with points transitionsing from the various zones
     extract_transition_points <- function(df, holdings_sf, min_ft = 6700) {
-      p <- df %>% group_by(flight_id)
+      p <- df %>% group_by(flight_id) %>% arrange(timestamp)
 
       # indexes within 40 NM
       p_40 <- p %>%

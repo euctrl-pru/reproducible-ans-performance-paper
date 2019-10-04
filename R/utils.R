@@ -74,8 +74,7 @@ extract_airport_distance <- function(rawdatafile, arp, distance) {
     vert_speed = col_double(),
     on_ground = col_logical(),
     distance = col_double(),
-    distance_arp = col_double(),
-    sequence_number = col_double()
+    distance_arp = col_double()
   )
   d <- distance * 1852
   rawdatafile %>%
@@ -184,27 +183,41 @@ smooth_arrival_trajectories <- function(rawdatafile, size = 5) {
     timestamp = col_datetime(format = ""),
     latitude = col_double(),
     longitude = col_double(),
-    altitude = col_integer(),
+    altitude = col_double(),
     speed_gnd = col_double(),
     track_gnd = col_double(),
     vert_speed = col_double(),
     on_ground = col_logical(),
     distance = col_double(),
-    distance_arp = col_double(),
-    sequence_number = col_integer()
+    distance_arp = col_double()
   )
 
   # RT trajectories
   vroom(rawdatafile, col_types = c) %>%
-    dplyr::add_count(flight_id) %>%
+    dplyr::group_by(flight_id) %>%
     dplyr::arrange(timestamp) %>%
+    dplyr::mutate(n = n()) %>%
+    # filter out trajectories with too few points
     dplyr::filter(n >= 3) %>%
+    # filter out trajectories with too few non NA altitudes
+    dplyr::mutate(n_not_na = sum(!is.na(altitude))) %>%
+    dplyr::filter(n_not_na >= 3) %>%
+    # fill NA with neaby ones
+    # tidyr::fill(longitude, latitude, altitude, .direction = "downup") %>%
     dplyr::mutate_at(.vars = c("longitude", "latitude", "altitude"),
-                     .funs = ~ zoo::rollmean(.x,
+                     .funs = ~ zoo::rollmedian(.x,
                                              k = size,
                                              fill = c("extend", "extend", "extend"))) %>%
+    # dplyr::mutate_at(.vars = c("longitude", "latitude", "altitude"),
+    #                  .funs = ~ zoo::rollmean(.x,
+    #                                          k = size,
+    #                                          fill = c("extend", "extend", "extend"))) %>%
+    # dplyr::mutate_at(.vars = c("longitude", "latitude"),
+    #                 .funs = ~ pracma::movavg(.x,
+    #                                         n = size,
+    #                                         type = "w")) %>%
     dplyr::ungroup() %>%
-    dplyr::select(-n) %>%
+    dplyr::select(-n, -n_not_na) %>%
     readr::write_csv(file)
 }
 

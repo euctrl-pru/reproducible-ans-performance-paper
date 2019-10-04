@@ -62,6 +62,6 @@ plot_eidw_tma <- function() {
     data = rw,
     ggplot2::aes(x = longitude, y = latitude, xend = longitude2, yend = latitude2),
     size = 1.2)
-  g2d <- g + grw_sf + gbox + gvor + gvorl
+  g2d <- g + gbox + gvor + gvorl + grw_sf
   g2d
 }
