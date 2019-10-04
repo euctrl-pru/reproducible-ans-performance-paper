@@ -9,6 +9,10 @@ navbar:
     href: setup.html
   - text: Data
     href: data.html
+  - text: Paper
+    href: paper.html
+  - text: Website
+    href: website.html
   - text: About
     href: about.html
   right:
