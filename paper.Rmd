@@ -11,7 +11,6 @@ output:
     includes:
       in_header: header.tex
       keep_tex: yes
-      after_body: biographies.tex
     number_sections: yes
     toc: no
     with_dblfloatfix: no
@@ -45,8 +44,8 @@ abstract: "Air transportation is undergoing a fundamental transformation. On the
   traffic.\nTo meet this goal, operational concepts and technological enablers are
   deployed with the promises of distinct performance improvements. These improvements
   are typically widely marketed, however, the underlying evidence is not made available.
-  From that respect Air Navigation System Performance suffers from the same credibility
-  crisis seen in other industries. \nThis paper implements the reproducibility paradigm
+  From that respect Air Navigation System Performance faces varying levels of transparency
+  as seen in other industries. \nThis paper implements the reproducibility paradigm
   by providing data, code, and results openly to enable another researcher or analyst
   to reproduce - and potentially - improve or build on our work. This work is part
   of a wider thread to establish Open Data and Open Source based data analytical capabilities
@@ -111,7 +110,7 @@ Moreover, the success of these deployments is typically supported by promising b
 While these improvements are marketed, the underlying data and associated analyses in support of the results are seldomly made available. 
 Explanations range from data sensitivity, commercial interests and property rights, through to complexity of the data analyses or simulations, and the associated volume of data.
 
-Accordingly, ANS performance improvements are subject to a "credibility crisis" similar to reported problems in other domains, e.g. medicine [@kolata_2011], psychology [@ritchie_2012], ecology [@fraser_etal_2018]. Fidler and Wilcox (2018) provides a recent review of the reproducibility discussion [@fidler_wilcox_2018]. 
+Accordingly, ANS performance improvements are subject to a "credibility crisis" (varying levels of transparency) similar to reported problems in other domains, e.g. medicine [@kolata_2011], psychology [@ritchie_2012], ecology [@fraser_etal_2018]. Fidler and Wilcox (2018) provides a recent review of the reproducibility discussion [@fidler_wilcox_2018]. 
 Part of the crisis sensation was driven by the diffusion of reported results as other researchers/analysts were able to discover substantial flaws in the data analyses. However, a crisis also offers room for self-correction.
 Throughout the recent years, this lead to revisitng the concept of reproducible research.
 This concept is based on the premises that an independent researcher/analyst is enabled to reproduce the reported results.
@@ -123,13 +122,14 @@ Reproducibility covers therefore a spectrum and mix of method, data, and analyti
 ```
 
 Independent (operational) ANS performance builds on transparent and robust performance monitoring and reporting.
-Within the European context EUROCONTROL's Performance Review Unit (PRU) is committed to provide impartial analyses of the performance of the European Air Navigation System based on verified data.
-With a view to enhance transparency, PRU is - inter alia - making performance-related data publicly available via its Portal, [http://ansperformance.eu](http://ansperformance.eu), since early 2017 combined with the methodological documentation for the calculation of the performance indicators used under the EUROCONTROL Performance Revew System and the European Union Performance Scheme.
+Within the European context, EUROCONTROL's Performance Review Unit (PRU) is committed to provide impartial analyses of the performance of the European Air Navigation System based on verified data.
+With a view to enhance transparency, PRU is - inter alia - making performance-related data publicly available via its portal, [http://ansperformance.eu](http://ansperformance.eu), since early 2017 combined with the methodological documentation for the calculation of the performance indicators used under the EUROCONTROL Performance Revew System and the European Union Performance Scheme.
 There has been recognition of using common and openly available tools and data in ATM research and operational validation.
 With the advent of crowd sourced data and aviation databases there is an opportunity to advance the state of the art by combining open data and government organisation collected data to establish a curated platform supporting the quest for reproducibility in ANS Performance.
 One of the associated building blocks is the performance reference trajectory [@spinielli_2018].
-The performance reference trajectory will be deployed as Open Data throughout 2019. The trajectory project builds on crowd sourced surveillance data fused with correlated position reports collected from European air navigation service providers.
-Based on the Open Data model it will be possible to augment the data processing (e.g. data coverage, time synchronisation), establishment of derived data bases (e,g fleet data base), associated performance models (e.g. aircraft performance model), but also the continual further development and validation of operational performance measures/indicators. 
+At the time of writing, the performance reference trajectory is in its design stage. The trajectory project builds on crowd sourced surveillance data fused with correlated position reports collected from European air navigation service providers.
+Based on the Open Data model it will be possible to augment the data processing (e.g. data coverage, time synchronisation), establish derived data bases (e,g fleet data base), and derive associated performance models (e.g. aircraft performance model).
+This setup enables the continual further development and validation of operational performance measures/indicators. 
 
 ```{r}
 # Method by which the problem is approached.
@@ -156,6 +156,8 @@ The contributions of this paper are as follows:
 
 # Background - Reproducibility 
 
+## Scope and Definition
+
 Conceptually, reproducibility is not a new topic. 
 It is as old as the scientific method and at the heart of the verification/validation of results.
 The consistent and robust interpretation of results by independent researchers/analysts forms the evidence and the inherent body of knowledge in support of the applied methods or conclusions. 
@@ -165,16 +167,29 @@ The terms replication and reproducibility are often used interchangeably and the
 Results are considered replicable, "if there is sufficient information available for independent researchers to make the same [consistent] findings using the same procedures with new data" ([@gandrud_2015], p. 3f). 
 Replicability, thus, does not aim to produce the "same" (aka identical) results. Here the goal is to establish confirmation of the approach and findings by deriving same conclusions. ^[For example, the same data collection procedures may not necessarily result in "identical" results as the time horizon might be different, (new or different) data for another study case show different result values, but the conclusions are consistent with the replicated approach.] 
 <!-- this should be a footnote - caret ^ followed by [] --> 
-Accordingly, results are reproducible, if an independent researcher can recreate the findings based on the given information. In our domain (i.e. operational ANS Performance and associated data analysis) this will require the access to data and derived summaries, how associated visualisations have been generated, the accompanying explanatory text, and conclusions drawn for the analysis.
+Accordingly, results are reproducible, if an independent researcher can recreate the findings based on the given information. In our domain (i.e. operational ANS Performance and associated data analysis) this will require the access to data and derived summaries, how associated visualisations have been generated, the accompanying explanatory text, and conclusions drawn from the analysis.
 
 Reproducibility has also to be seen in light of today's "publish or perish" context. It appears that higher emphasis is given to the frequency of publication than the validity of the produced results. Within the medical world cases like the Duke ovarian cancer scandal [@kolata_2011] are not single incidents, but also demonstrate how errors during the data analysis - in this case during the data preparation phase using spread sheets - can discredit the work.
 Despite the increasing awareness, the adaption of reproducibility or moving to other open scholarship/investigation techniques is not yet achieved. 
-This can be contrasted by emerging practices like data journalism. One interesting example is buzzFeed's article on the use of surveillance planes operated by law enforcement and military for a variety of purposes. The authors were able to demonstrate based on Open Data that these purposes range from tracking drug trafficking to testing new surveillance technology [@peteraldhous_2016]. The credibility of the article comes from the fact that all artifacts are made available to reproduce the findings or study the chosen approach and data transformations made leading to the conclusions of the article.
+This can be contrasted by emerging practices like data journalism. One interesting example is buzzFeed's article on the use of surveillance planes operated by law enforcement and military. The authors were able to demonstrate based on Open Data that these purposes range from tracking drug trafficking to testing new surveillance technology [@peteraldhous_2016]. The credibility of the article comes from the fact that all artifacts are made available to reproduce the findings or study the approach and data transformations leading to the conclusions of the article.
 
 Arguably there are limits to the access to underlying source data. However, these limitations also offer an opportunity to address reproducibility [@koelle_open_2017]. For example, the data volume size might prohibit the further dissemination of data, its collection is too resource intensive, or there exists restrictive license agreements. Experience has shown that even in such cases, a limited sample of the source data can be made available for others to verify the initial data processing steps. 
 For that purpose the creation of an analytical data set as the output of the data collection, gathering, and cleaning process stage can be understood as sufficient in the sense of reproducible research. 
 One key transparency aspect is the documentation of the data preparation steps. 
 The article Spies in the Skies by Peter Aldhous and Charles Seife [@peteraldhous_2016] is a good example for a reproducible analysis of the US government's airborne surveillance program. Though the license restrictions did not allow for the publication of the underlying aircraft position data, the authors made available the analytical data set and documented their analysis from the data preparation through to the publication stage.
+
+
+Reproducibility is discussed in various domains. The following examples further promote the use of open source software and/or data:
+
+* archaeology: Marwick et al. (2017) focusses on computational reproducibility in archaeological research by providing basic principles. The case study of their implementation uses open source software (R/Rmarkdown/git approach)  [@marwick_2017]. The paper advocates the publishing (analytical) data in support of the paper. This should not be an issue, even if there are constraints on the overall study data.
+* engineering / signal processing: Vandewalle (2009) discuss the motivation and approach to reproducibility in signal processing (i.e. what, why, and how). Also here the case is made to open access to the code and data for validation purposes [@vandewalle_2009].
+* operational ANS Performance monitoring: Spinielli et al. (2018) highlight the development and use of Open Flight Trajectories for reproducible ANS [@spinielli_2018].
+
+
+
+## Practical Challanges
+
+
 
 The reproducibility discussion focuses strongly on the recreation of results by other researchers/analysts.
 A related problem is the re-generating of already completed (and potentially published) results with the - previously - available same input data. 
@@ -191,16 +206,9 @@ Some of the reasons why researchers/analysts do not publish data and computation
 Another incentive for the adoption of an open and reproducible research practice can be seen in the wider recognition through increased citations, media attention, discussion with the community and collaborators, and ultimately funding opportunities.
 The recent years have seen a strong use of research blogs and community platforms supporting the publication of smaller steps or intermediate results. The combination of web presentation and discussions offers a good basis for an initial dialogue.
 Platforms like google scholar or researchgate.net offer additional features for outreach and communication.
-This equally applies for paper achives such as arxiv.org for pre-prints.
+This equally applies for paper archives such as arxiv.org for pre-prints.
 Based on the credibility crisis discussion a number of journals are now promoting - or even requiring - the provision of analytical data in support of the paper publication. 
 There is also an increasing number of requirements for national or European funded research with respect to data management and Open Data access to the research.
-
-
-Reproducibility is discussed in various domains. The following examples further promote the use of open source software and/or data:
-
-* archaeology: Marwick et al. (2017) focusses on computational reproducibility in archaeological research by providing basic principles. The case study of their implementation uses open source software (R/Rmarkdown/git approach)  [@marwick_2017]. The paper advocates the publishing (analytical) data in support of the paper. This should not be an issue, even if there are constraints on the overall study data.
-* engineering / signal processing: Vandewalle (2009) discuss the motivation and approach to reproducibility in signal processing (i.e. what, why, and how). Also here the case is made to open access to the code and data for validation purposes [@vandewalle_2009].
-* operational ANS Performance monitoring: Spinielli et al. (2018) highlight the development and use of Open Flight Trajectories for reproducible ANS [@spinielli_2018].
 
 (ref:reproducible-research) Reproducible research, Fig. 2 in [@marwick_2017]. 
 
@@ -208,8 +216,12 @@ Reproducibility is discussed in various domains. The following examples further 
 knitr::include_graphics("figures/reproducible-research-spectrum.png")
 ```
 
-Across the literature, researchers have identified a "reproducibility spectrum" ranging from the extreme, i.e. publication only ( advertising and marketing of the done work), to almost or even fully replicable research.
-The work of Marwick et al. (2017) [@marwick_2017] and Peng (2011) [@Peng1226] uses the analogy of a spectrum that can be mapped against the scoring of Vandewalle (2009) describing the level of reproducibility on a 0 to 5 scale [@marwick_2017].
+
+
+## Reproducibility Spectrum
+
+Across the literature, researchers have identified a "reproducibility spectrum" ranging from the extreme, i.e. publication only (advertising and marketing of the done work), to almost or even fully replicable research.
+The work of Marwick et al. [@marwick_2017] and Peng [@Peng1226] uses the analogy of a spectrum that can be mapped against the scoring of Vandewalle (2009) describing the level of reproducibility on a 0 to 5 scale [@marwick_2017].
 In light of [@leek_2015], this paper conceptualises reproducibility as the "ability to recompute data analytic results given an observed dataset and knowledge of the data analysis pipeline" and accordingly "replicability of a study is the chance that an independent experiment targeting the same scientific question will produce a consistent result".
 
 With Fig. \@ref(fig:reproducible-research) and the discussion in this section, this paper implements a fully reproducible workflow.
@@ -237,7 +249,7 @@ On the data level this approach abstracts three levels of data:
 * results (and performance related data)
 
 The source data for this paper comprises the PRU Performance Reference Trajectory and operator reported data under the airport operator data flow. This study also uses some aeronautical information for the use case airports accessible through AIP or community maintained open data archives (e.g. http://openaip.net, http://ourairports.com).
-These data flows are processed and stored in the EUROCONTROL data Warehouse.
+These data flows are processed and stored in the EUROCONTROL data warehouse.
 The approach recognises that the full source data may or cannot be provided for a variety of reasons. 
 These include volume of the source data sets, technical constraints allowing access to the source data storage, and data sharing policies or use limitations.
 For the latter cases, PRU promotes the sharing of a so-called representative sample.
@@ -256,7 +268,7 @@ Accordingly, the results (or performance related data) level presents the final 
 This work builds on the RStudio tools for the R language [@rcoreteam_2018] including Git (and the web-based repository managers GitHub and GitLab) as underlying version control system.
 The R language  was originally developed within the statistical community supporting the task of statistical reporting by providing routines for the statistical computing and visualisation.
 Being open source, the R community is actively engaging and sharing related software packages to enhance the core functionality.
-Without limiting the impact of other packages, the development of knitr [@R-knitr] and RMarkdown [@xie2018], ggplot [@wickham_2016] for visualisation, and the so-called tidyverse packages and RStudio IDE [@rstudioteam_2015] provide the basis for an open source data analysis ecosystem.
+Without limiting the impact of other packages, the development of knitr [@R-knitr] and RMarkdown [@xie2018], ggplot [@wickham_2016] for visualisation, and the so-called tidyverse packages and RStudio IDE [@rstudioteam_2015] represent an open source ecosystem for data analysis.
 
 A key feature for the implementation of the reproducibility paradigm is the fact that RMarkdown supports the combination of text, coding, and visualisations in a single document. 
 The latter can be rendered into various output formats, e.g. classical paper report-styles (pdf, MS Word), html web-pages, and slides (both classical Powerpoint style or html-based presentations).
@@ -265,7 +277,7 @@ It follows that changes to the code (and associated visualisations) or text can 
 This allows to develop standard templates for recurring reports based on varying input data, but it also serves the iterative development of larger reports (and studies).
 
 
-A minimal example of RMarkdown document, a plain-text file with the conventional
+A minimal example of an RMarkdown document, a plain-text file with the conventional
 extension `.Rmd` is shown below:
 
 \footnotesize
@@ -308,17 +320,13 @@ The slope of the regression is `r b[1]`.
 
 \normalsize
 
-(ref:rmd-example) The output of a minimalist example of RMarkdown. 
-
-```{r rmd-example,echo=FALSE,fig.cap='(ref:rmd-example)',fig.pos='htb',fig.height=4}
-knitr::include_graphics('figures/rmd-example.png', dpi = NA)
-```
 
 
 There are three components of an R Markdown document: the metadata, the text and the code.
 The metadata, written between the pair of three dashes `---`, helps in the production of
 output document (title, type of document [web page, PDF, MS Word], ...)
-The text, which follows the metadata, is witten using Markdown, a simplified formatting syntax.
+The text, which follows the metadata, is witten using Markdown, a simplified formatting syntax
+which can include prose and code.
 There are two types of (computer) code:
 
 - A code chunk starts with three backticks and `r` indicates the
@@ -328,12 +336,17 @@ There are two types of (computer) code:
 - An inline R code expression starts with backtick r and ends with a backtick.
 
 Code portions are executed when the document is rendered.
+Fig. \@ref(fig:rmd-example) shows how the simple R Markdown example is rendered.
+
+(ref:rmd-example) The output of a minimalist example of RMarkdown. 
+
+```{r rmd-example,echo=FALSE,fig.cap='(ref:rmd-example)',fig.pos='htb',fig.height=3}
+knitr::include_graphics('figures/rmd-example.png', dpi = NA)
+```
 
 
 
-The result of rendering the R Markdown above is shown in Fig. \@ref(fig:rmd-example).
-
-A particular strong point is that the R/Rstudio ecosystem is open source software.
+A particular strong point is that the R/RStudio ecosystem is open source software.
 This includes also its extensibility with other packages. There exists a wide variety of packages for data analytical tasks and techniques. This mechanism can also be useful for the communication of results. Researchers/analysts are able to provide their code and supporting documentation as a package for other researchers to build on.
 For example, throughout the last year, PRU has developed certain utility functions for reoccurring tasks of the data analytical pipeline.
 It is now planned to wrap these functions into a package saving other researchers/analysts of recoding certain steps.
@@ -345,11 +358,11 @@ All these files are available via the project webpage.
 
 Throughout the recent year PRU developed the data analytical capabilities to fuse correlated position reports and ADSB surveillance data.
 This work has been reported in [@koelle_open_2017] and [@spinielli_2018]. The idea is to establish a pan-European air situation picture openly available to research and practitioners.
-Conceptually, the fused performance reference trajectory will be a key milestone in combatting marketing myths.
-For example, operational improvements can be directly assessed by interested analysts with a view to validate the observable performance improvements. This allows for the application of commonly accepted methods and models to express performance benefits and  - ultimately - challenge related publications on deployments and achieved improvements.
+Conceptually, the fused performance reference trajectory will be a key milestone in combatting the "marketing myths."
+For example, operational improvements can be directly assessed by interested analysts as access to the Open Data enables the validation of the observable performance improvements. This allows for the application of commonly accepted methods and models to express performance benefits and  - ultimately - challenge related publications on deployments and achieved improvements.
 
-End of 2018 the development project was closed and PRU is now investigating options for deploying and maintaining the processing modules on a cloud platform.
-The goal is to establish and operate the underlying data processing capabilities throughout 2019 and launch the regular provision of the performance reference trajectory as Open Data.
+At the end of 2018 the initial development project phase was closed and PRU is now investigating options for deploying and maintaining the processing modules on a cloud platform.
+The goal is to establish and operate the underlying data processing capabilities throughout 2019 and launch the regular provision of the performance reference trajectory as Open Data in 2020.
 It is also planned to establish a network and complement the air situation picture by deploying additional sensors or determining non-ADSB derived positions as a community effort.
 As a mid-term goal associated data bases and models for performance shall be established and jointly maintained.
 
@@ -404,8 +417,9 @@ the steps and the relevant scripts (available in the companion repository for th
 1. the script `R/extract-arrivals.R` extracts arrivals to the `APT` airport and generates:
 
     * a file with flight details
-    * a file with all the arrivals' positions
-    * a file with all arrivals' positions within 40 NM the airport's reference position (ARP)
+    * a file with all the arrivals' positions (`raw` trajectories)
+    * a file with all the arrivals' positions (smoothed trajectories)
+    * a file with all (smoothed) arrivals' positions within 40 NM of the airport's reference position (ARP)
 
 3. the script `R/extract-transition-points.R` extracts transition points in the terminal area
    and generates a file containing per each flight:
@@ -424,18 +438,20 @@ knitr::include_graphics("figures/eidw-arrival-chart-east.png")
   This stage makes use of data extracted/extrapolated from the relevant AIP, see
   for example Fig. \@ref(fig:eidw-arrival-chart-east), such
   as ARP, runway name and threshold position/elevation, polygons for holding
-  stacks or point-merge areas. Specifically the polygons have been heuristically
-  defined and enlarged by 2NM in order to cater for the spread of real flown trajectories,
+  stacks or point-merge areas. Specifically the polygons have been heuristically defined from the
+  point merge points in the AIP and enlarged by 2NM in order to cater for the spread of real flown
+  trajectories,
   see the scripts `R/egll-data.R` and `R/eidw-data.R`.
 
 
 
-Each position mentioned above consist of at least
+Each transition position mentioned above consist of at least
 
-* flight ID
+* aircraft/flight info (ID, callsign, registration, ADEP/ADES, ICAO 24 bit address)
 * 4D position (timestamp $T$, longitude, latitude, altitude)
-* flown distance $D$
+* flown distance $D$ from aerodrome of departure (ADEP)
 * sequence number
+* point info (sequence number, type of transition point [`P40`, `PHOLD`, `PLAND`])
 * distance from ARP
 
 These allow to calculate for each flight
@@ -475,7 +491,7 @@ eidw_cov_apdf <- eidw_arrs_apdf %>% prep_cov_apdf()
 eidw_cov_trj  <- eidw_arrs_trj %>% prep_cov_trj()
 ```
 
-(ref:coverage-egll) Number of arrivals in data sets, i.e. 1.-8. July 2017.
+(ref:coverage-egll) Number of arrivals in data sets, i.e. 1.-8. Aug 2017.
 
 ```{r coverage-egll, fig.cap='(ref:coverage-egll)',fig.pos='hbt',fig.height=4}
 tmp <- bind_rows(eidw_cov_apdf, eidw_cov_trj, egll_cov_apdf, egll_cov_trj) %>%
@@ -513,7 +529,7 @@ For the time horizon of this paper, the coverage of the reference trajectory der
 ## "replicate" ASMA (time-based)
 
 The additional time in the arrival sequencing and metering area (ASMA) is a globally recognised measure to assess flight efficiency during the arrival phase. 
-The ASMA metric calculates the additional time based on a reference time which is determined for a family of flights sharing similar characteristics. These are the entry sector into the arrival airspace, weight turbulence category and engine type, and the actual landing runway.
+The ASMA metric calculates the additional time based on a reference time which is determined for a family of flights sharing similar characteristics. 
 For each flight $i$ the additional ASMA time is
 
 $${add.~ASMA~time}_i = {actual~travel~time}_i - {reference~time}_i$$
@@ -521,7 +537,7 @@ $${add.~ASMA~time}_i = {actual~travel~time}_i - {reference~time}_i$$
 The reference time $i$ is determined for flights with similar arrival characteristics (c.f. [http://ansperformance.eu/references/definition/additional_asma_time.html](http://ansperformance.eu/references/definition/additional_asma_time.html)). These include 1.) the arrival entry sector at 40NM from the airport, 2.) the aircraft weigth turbulence category and engine type, and 3.) the actual landing runway.
 The reference times are built for a longer time horizon and extracted from the PRU data base as additional source data.
 
-(ref:ASMA-travel-egll) Distribution of actual ASMA travel times for EGLL (1.-8. July 2017).
+(ref:ASMA-travel-egll) Distribution of actual ASMA travel times for EGLL (1.-8. Aug 2017).
 
 
 ```{r ASMA-travel-egll,fig.cap='(ref:ASMA-travel-egll)',fig.pos='hbt',fig.height=4, message=FALSE}
@@ -594,6 +610,7 @@ ggplot(data = tmp, mapping = aes(x = C40_SECT, y = TRAVEL)) +
   ylim(0,100) +
   labs(x = "ASMA entry radials", y = "travel time [min]")
 ```
+
 As an example, the distribution of the actual arrival transit times for arrivals into Heathrow (EGLL) are shown in Fig. \@ref(fig:ASMA-travel-egll). Heathrow operates holding stacks to tactically optimise the arrival throughput.
 Dependent on the traffic situation, aircraft may experience longer holding times (i.e. long tails of boxplots in Fig. \@ref(fig:ASMA-travel-egll)).
 
@@ -624,6 +641,8 @@ eidw_asma_ref <- eidw_asma_ref %>% select(WTC2 = AC_CLASS, RWY = RUNWAY , C40_SE
 
 eidw_pts <- eidw_pts %>% left_join(eidw_asma_ref) 
 ```
+
+
 
 
 ```{r}
@@ -678,7 +697,7 @@ WORKED ONCE SINCE THEN ERROR: Error: Evaluation error: error -103 with zipfile i
 ==> downloaded xlsm and saved out data tab to ASMA.PERF.csv
 -->
 
-(ref:ASMA-compare) Comparison of determined ASMA values, i.e. 1.-8. July 2017.
+(ref:ASMA-compare) Comparison of determined ASMA values, i.e. 1.-8. Aug 2017.
 
 
 ```{r ASMA-compare, fig.cap='(ref:ASMA-compare)',fig.pos='hbt',fig.height=4}
@@ -704,9 +723,9 @@ ggplot(data = tmp, mapping = aes(x = AIRPORT, y = AVG_ADD_TIME
   scale_fill_discrete(name = "variant", breaks = c("APDFNM", "TRJ-REF", "TRJ-20PCT"))
 ```
 
-Fig. \@ref(fig:ASMA-compare) shows the variation of the timebased additional ASMA times determined for our sample.
-APDFNM refers to the variant used for the EUROCONTROL Performance Review System. The reference time is build on the basis of a one-year sammple. Applying this reference time to the trajectory based travel times (i.e. TRJ-REF), there is a strong increase of the additional ASMA time for Heathrow (EGLL), while in the case of Dublin (EIDW) reasonable decrease takes place. Calculating the additional ASMA time exclusively with the trajectory sample and applying a 20th percentile approach (TRJ-20PCT), shows a significant drop in EGLL and a moderate increase at Dublin. The high variation for Heathrow shows that the additional ASMA time is strongly dependent on the time horizon.
-The pure trajectory bases measure - by definition - includes the effect of the operational concept (stack holdings) and distorts the measure. In the case of Dublin it can be argued that the TRJ-20PCT measure reflects the time based ASMA measure suffiently.
+In Fig. \@ref(fig:ASMA-compare) 
+APDFNM refers to the variant used for the EUROCONTROL Performance Review System. The reference time is build on the basis of a one-year sample. Applying this reference time to the trajectory based travel times (i.e. TRJ-REF), there is a strong increase of the additional ASMA time for Heathrow (EGLL), while in the case of Dublin (EIDW) a reasonable decrease takes place. Calculating the additional ASMA time exclusively with the trajectory sample and applying a 20th percentile approach (TRJ-20PCT), shows a significant drop in EGLL and a moderate increase at Dublin. The high variation for Heathrow shows that the additional ASMA time is strongly dependent on the time horizon.
+The pure trajectory based measure - by definition - includes the effect of the operational concept (stack holdings) and distorts the measure. In the case of Dublin it can be argued that the TRJ-20PCT measure reflects the time based ASMA measure suffiently.
 
 ## Distance-based ASMA
 
@@ -716,7 +735,7 @@ Flight time is linked to engine time and accordingly, assuming maneuvering for o
 From a service provision perspective, efficiency relates to the capability to provide the least distance flown within the ASMA area.
 In that respect, the data analytical capability to determine an associated additional distance flown metric addresses an open gap.
 
-(ref:ASMA-time-dist) Relationship travel time and distance flown, i.e. 1.-8. July 2017.
+(ref:ASMA-time-dist) Relationship travel time and distance flown, i.e. 1.-8. Aug 2017.
 
 ```{r ASMA-time-dist, fig.cap='(ref:ASMA-time-dist)', message = FALSE}
 prep_asma_dist <- function(apt) {
@@ -741,7 +760,7 @@ ggplot(data = egll_dist %>% filter(TRAVEL > 6), mapping = aes(x = DIST_FLOWN, y 
 
 Fig. \@ref(fig:ASMA-time-dist) shows the relationship between the actual distance flown and the actual time flown.
 The variation of travel times is influenced by varying airspeeds or weather phenomena (e.g. wind).
-This paper applies a simple 15th percentile approach to the distance flown per arrival sector, aircraft type/engine, and landing runway.
+This paper applies a simple 15-th percentile approach to the distance flown per arrival sector, aircraft type/engine, and landing runway.
 
 ```{r tbl-asma-dist}
 asma_dist <- function(ds_pts, ds_dist){
@@ -771,6 +790,10 @@ knitr::kable(dist_asma, digits = 2
 ```
 
 Tab. \@ref(tab:tbl-asma-dist) lists the determined average additional distance at the study airports.
+The total additional distance is determined as the aggregated sum of the differences in each segmnent
+with 15-th percentile reference distance.
+
+
 
 ## Arrival Management Practices
 
@@ -810,7 +833,7 @@ egll_day1 <- egll_day1 %>% filter(flight_id %in% egll_long_dist$flight_id)
 source(here::here("R/plot-egll-tma.R"))
 ```
 
-(ref:egll-trajectory-example) EGLL - long trajectory flown on 1. July 2017.
+(ref:egll-trajectory-example) EGLL - long trajectory flown on 1. Aug 2017.
 
 ```{r egll-trajectory-example, fig.cap='(ref:egll-trajectory-example)'}
 plot_egll_tma() + geom_point(
@@ -821,7 +844,7 @@ plot_egll_tma() + geom_point(
   theme(legend.position = "none")
 ```
 
-(ref:eidw-trajectory-example) EIDW - long trajectory flown on 1. July 2017.
+(ref:eidw-trajectory-example) EIDW - long trajectory flown on 1. Aug 2017.
 
 
 ```{r eidw-trajectory-example, fig.cap='(ref:eidw-trajectory-example)'}
@@ -851,11 +874,12 @@ plot_eidw_tma() + geom_point(
   theme(legend.position = "none")
 ```
 
-Fig. \@ref(fig:egll-trajectory-example) and Fig. \@ref(fig:eidw-trajectory-example) show examples for long distances flown on 1. July 2017.
+Fig. \@ref(fig:egll-trajectory-example) and Fig. \@ref(fig:eidw-trajectory-example) show examples
+for long distances flown on 1. Aug 2017.
 The trajectory data allows for the identification of the holdings and/or sequencing area.
 This allows to separate the effect of the operational concepts.
 
-(ref:distance-flown-segment) Actual distances flown for each segment of the arrival phase (i.e. EGLL, 1.-8. July 2017).
+(ref:distance-flown-segment) Actual distances flown for each segment of the arrival phase (i.e. EGLL, 1.-8. Aug 2017).
 
 <!-- TO DO: clean figure - work out bearings -- do it for Dublin as well -->
 
@@ -900,7 +924,7 @@ ggplot(data = tmp, mapping = aes(x = cut(C40_BRG, breaks = c(0,58, 180, 280, 360
        ,fill = "arrival segment")
 ```
 
-(ref:distance-flown-segment-eidw) Actual distances flown for each segment of the arrival phase (i.e. EIDW, 1.-8. July 2017).
+(ref:distance-flown-segment-eidw) Actual distances flown for each segment of the arrival phase (i.e. EIDW, 1.-8. Aug 2017).
 
 ```{r distance-flown-segment-eidw, fig.cap="(ref:distance-flown-segment-eidw)"}
 tmp <- read_pts_trj("eidw") %>% segment_approach() %>% select(flight_id, C40_BRG, DIST_1, DIST_2, DIST_3)
@@ -946,7 +970,7 @@ rq <- full_join(THRU_GATE, THRU_HIN, by = "BIN")
 rq <- rq %>% mutate(THRU_N2 = lead(THRU_N,1), THRU_N3 = lead(THRU_N,2))
 ```
 
-(ref:eidw-saturation-example) EIDW - arrival throughput saturation (1.-8. July 2017).
+(ref:eidw-saturation-example) EIDW - arrival throughput saturation (1.-8. Aug 2017).
 
 ```{r eidw-saturation-example, fig.cap='(ref:eidw-saturation-example)'}
 g <- ggplot(data = rq %>% na.omit, mapping = aes(x = as.factor(THRU_NG), y = THRU_N2 + THRU_N3)) + 
