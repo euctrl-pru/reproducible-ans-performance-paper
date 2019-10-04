@@ -12,7 +12,7 @@
 
 
 
-<title>Setup</title>
+<title>Paper</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -316,7 +316,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Setup</h1>
+<h1 class="title toc-ignore">Paper</h1>
 
 </div>
 
@@ -460,36 +460,9 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 </div>
 </div>
 </div>
-<p>This RMarkdown describes the setup of the R/RStudio environment needed to reproduce the paper.</p>
 <div id="reproduce-the-paper" class="section level2">
 <h2>Reproduce the paper</h2>
-<p>The analysis and production of this paper make use of a number of R packages, which need to be installed and functioning:</p>
-<ul>
-<li><p><code>tinytex</code></p>
-<pre class="r"><code>devtools::install_github(&#39;yihui/tinytex&#39;)
-tinytex::install_tinytex()</code></pre></li>
-<li><p><code>rticles</code>: from <a href="https://github.com/rstudio/rticles"><code>rstudio</code></a> if <a href="https://github.com/rstudio/rticles/pull/247">PR #247</a> has been merged and released on CRAN</p>
-<pre class="r"><code>install.packages(&quot;rticles&quot;)</code></pre>
-<p>otherwise directly from <a href="https://github.com/rstudio/rticles/">Github</a></p>
-<pre class="r"><code>remotes::install_github(&quot;rstudio/rticles&quot;)</code></pre></li>
-<li><p><code>tidyverse</code> and <code>sf</code></p>
-<pre class="r"><code>install.packages(c(&quot;tidyverse&quot;, &quot;sf&quot;))</code></pre></li>
-<li><p>install IEEE Transaction LaTeX style:</p>
-<pre class="r"><code>tinytex::tlmgr_install(&quot;IEEEtran&quot;)</code></pre></li>
-<li><p>in order to overcome the missing small caps fonts (this needs to be done once):</p>
-<ol style="list-style-type: decimal">
-<li>uncomment <code>\usepackage{times}</code> in <code>header.tex</code></li>
-<li>knit <code>paper.Rmd</code></li>
-<li>comment again <code>\usepackage{times}</code> in <code>header.tex</code></li>
-</ol></li>
-</ul>
-<p>You should now be in the position to knit <code>paper.Rmd</code> and obtain <code>paper.pdf</code>.</p>
-</div>
-<div id="issues" class="section level2">
-<h2>Issues</h2>
-<ul>
-<li>References on second and subsequent lines not correctly indented.</li>
-</ul>
+<p>Once the setup and data have been executed, reproducing the paper is just a matter of knitting the <code>paper.Rmd</code> file in order to obtain <code>paper.pdf</code>.</p>
 </div>
 
 

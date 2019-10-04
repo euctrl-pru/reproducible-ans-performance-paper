@@ -12,7 +12,7 @@
 
 
 
-<title>Setup</title>
+<title>Website</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -316,7 +316,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Setup</h1>
+<h1 class="title toc-ignore">Website</h1>
 
 </div>
 
@@ -344,7 +344,7 @@ div.section {
 <strong>Last updated:</strong> 2019-10-04
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>reproducible-ans-performance-paper/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -366,6 +366,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190217code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190217)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190217code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190217)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -460,36 +520,121 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 </div>
 </div>
 </div>
-<p>This RMarkdown describes the setup of the R/RStudio environment needed to reproduce the paper.</p>
-<div id="reproduce-the-paper" class="section level2">
-<h2>Reproduce the paper</h2>
-<p>The analysis and production of this paper make use of a number of R packages, which need to be installed and functioning:</p>
-<ul>
-<li><p><code>tinytex</code></p>
-<pre class="r"><code>devtools::install_github(&#39;yihui/tinytex&#39;)
-tinytex::install_tinytex()</code></pre></li>
-<li><p><code>rticles</code>: from <a href="https://github.com/rstudio/rticles"><code>rstudio</code></a> if <a href="https://github.com/rstudio/rticles/pull/247">PR #247</a> has been merged and released on CRAN</p>
-<pre class="r"><code>install.packages(&quot;rticles&quot;)</code></pre>
-<p>otherwise directly from <a href="https://github.com/rstudio/rticles/">Github</a></p>
-<pre class="r"><code>remotes::install_github(&quot;rstudio/rticles&quot;)</code></pre></li>
-<li><p><code>tidyverse</code> and <code>sf</code></p>
-<pre class="r"><code>install.packages(c(&quot;tidyverse&quot;, &quot;sf&quot;))</code></pre></li>
-<li><p>install IEEE Transaction LaTeX style:</p>
-<pre class="r"><code>tinytex::tlmgr_install(&quot;IEEEtran&quot;)</code></pre></li>
-<li><p>in order to overcome the missing small caps fonts (this needs to be done once):</p>
+<div id="build-the-companion-website" class="section level2">
+<h2>Build the companion website</h2>
+<p>The companion website to this project is generated by the <code>workflowr</code> package as follows:</p>
+<pre class="r"><code>wflow_build()</code></pre>
+<p>This will</p>
 <ol style="list-style-type: decimal">
-<li>uncomment <code>\usepackage{times}</code> in <code>header.tex</code></li>
-<li>knit <code>paper.Rmd</code></li>
-<li>comment again <code>\usepackage{times}</code> in <code>header.tex</code></li>
-</ol></li>
-</ul>
-<p>You should now be in the position to knit <code>paper.Rmd</code> and obtain <code>paper.pdf</code>.</p>
+<li>generate the relevant HTML pages in <code>docs</code> out of the R markdown files in the <code>analysis</code> directory.</li>
+<li>preview the website in the Viewer panel in RStudio</li>
+</ol>
+<p>The <code>docs</code> directory is automatically served by GitHub, so the website will be browsable on the Internet at <a href="https://euctrl-pru.github.io/reproducible-ans-performance-paper/" class="uri">https://euctrl-pru.github.io/reproducible-ans-performance-paper/</a>.</p>
 </div>
-<div id="issues" class="section level2">
-<h2>Issues</h2>
-<ul>
-<li>References on second and subsequent lines not correctly indented.</li>
-</ul>
+<div id="publish-the-website" class="section level2">
+<h2>Publish the website</h2>
+<p>Publishing and versioning the project website us accomplished via <code>wflow_publish()</code>. This will build and version control the HTML pages.</p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>devtools::session_info()</code></pre>
+<pre><code>- Session info ----------------------------------------------------------
+ setting  value                       
+ version  R version 3.6.1 (2019-07-05)
+ os       Windows 10 x64              
+ system   x86_64, mingw32             
+ ui       RTerm                       
+ language (EN)                        
+ collate  English_United Kingdom.1252 
+ ctype    English_United Kingdom.1252 
+ tz       Europe/Paris                
+ date     2019-10-04                  
+
+- Packages --------------------------------------------------------------
+ package     * version    date       lib
+ assertthat    0.2.1      2019-03-21 [1]
+ backports     1.1.4      2019-04-10 [1]
+ callr         3.3.2      2019-09-22 [1]
+ cli           1.1.0      2019-03-19 [1]
+ crayon        1.3.4      2017-09-16 [1]
+ desc          1.2.0      2018-05-01 [1]
+ devtools      2.2.1      2019-09-24 [1]
+ digest        0.6.21     2019-09-20 [1]
+ ellipsis      0.3.0      2019-09-20 [1]
+ evaluate      0.14       2019-05-28 [1]
+ fs            1.3.1      2019-05-06 [1]
+ git2r         0.26.1     2019-06-29 [1]
+ glue          1.3.1      2019-03-12 [1]
+ htmltools     0.3.6      2017-04-28 [1]
+ knitr         1.25       2019-09-18 [1]
+ magrittr      1.5        2014-11-22 [1]
+ memoise       1.1.0      2017-04-21 [1]
+ pkgbuild      1.0.5      2019-08-26 [1]
+ pkgload       1.0.2      2018-10-29 [1]
+ prettyunits   1.0.2      2015-07-13 [1]
+ processx      3.4.1      2019-07-18 [1]
+ ps            1.3.0      2018-12-21 [1]
+ R6            2.4.0      2019-02-14 [1]
+ Rcpp          1.0.2      2019-07-25 [1]
+ remotes       2.1.0      2019-06-24 [1]
+ rlang         0.4.0      2019-06-25 [1]
+ rmarkdown     1.15       2019-08-21 [1]
+ rprojroot     1.3-2      2018-01-03 [1]
+ sessioninfo   1.1.1      2018-11-05 [1]
+ stringi       1.4.3      2019-03-12 [1]
+ stringr       1.4.0      2019-02-10 [1]
+ testthat      2.2.1      2019-07-25 [1]
+ usethis       1.5.1      2019-07-04 [1]
+ withr         2.1.2      2018-03-15 [1]
+ workflowr     1.4.0.9001 2019-09-26 [1]
+ xfun          0.9        2019-08-21 [1]
+ yaml          2.2.0      2018-07-25 [1]
+ source                               
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.6.0)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.1)                       
+ CRAN (R 3.5.1)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.6.0)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.5.2)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.5.3)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.6.1)                       
+ CRAN (R 3.5.1)                       
+ Github (jdblischak/workflowr@02c86eb)
+ CRAN (R 3.6.0)                       
+ CRAN (R 3.5.2)                       
+
+[1] C:/Users/spi/Documents/R/win-library/3.6
+[2] C:/Program Files/R/R-3.6.1/library</code></pre>
+</div>
 </div>
 
 
