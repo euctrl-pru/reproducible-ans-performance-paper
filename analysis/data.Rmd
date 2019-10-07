@@ -17,7 +17,7 @@ We have two directories for data
 
 ## From `data-raw` to `data`
 
-The raw data filenames are as follows:
+The data filenames from Reference Trajectory repo are as follows:
 
 * flight information, i.e. `cpr_fr24_flights_2017-08-01.csv.bz2`
 * positions data, i.e. `mas_05_cpr_fr24_synth_positions_2017-08-01.csv.bz2`

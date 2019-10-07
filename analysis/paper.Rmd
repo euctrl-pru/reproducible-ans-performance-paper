@@ -6,6 +6,10 @@ output:
 ---
 
 ## Reproduce the paper
+
 Once the setup and data have been executed, reproducing the paper is just a matter of
 knitting the `paper.Rmd` file in order to obtain `paper.pdf`.
+
+The data crunching is performed in the R code chunks and the relevant graphs are produced
+on the fly.
 
