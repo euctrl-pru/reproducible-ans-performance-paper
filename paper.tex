@@ -402,10 +402,10 @@
 \usepackage{float}
 
 % as requested by conference Editor (plus hack after References section in Rmd)
-\usepackage[skip=6pt,indent]{parskip}
+% \usepackage[skip=6pt,indent]{parskip}
 
 % enable intentionally default disabled IEEE commands: needed for biographies
-\IEEEoverridecommandlockouts
+% \IEEEoverridecommandlockouts
 
 \def\IEEEkeywordsname{Keywords}
 
@@ -1094,10 +1094,14 @@ the establishment of the current performance reporting based on the trajectory (
 \section*{References}\label{references}}
 \addcontentsline{toc}{section}{References}
 
-\vspace{6pt}
+\begingroup
+
+\noindent
+\vspace{-1em}
+\setlength{\parindent}{-5mm}
+\setlength{\leftskip}{5mm}
 \setlength{\parskip}{0pt}
 \footnotesize
-\setlength{\parindent}{0cm}
 
 \hypertarget{refs}{}
 \leavevmode\hypertarget{ref-kolata_2011}{}%
@@ -1156,6 +1160,8 @@ the establishment of the current performance reporting based on the trajectory (
 
 \leavevmode\hypertarget{ref-spinielli_2017}{}%
 {[}19{]} E. Spinielli, R. Koelle, M. Zanin, and S. Belkoura, ``Initial Implementation of Reference Trajectories for Performance Review,'' \emph{SESAR Innovation Days}, no. 7, p. 8, 2017.
+
+\endgroup
 
 \end{document}
 

@@ -1066,7 +1066,14 @@ the establishment of the current performance reporting based on the trajectory (
 
 
 # References {-}
-\vspace{6pt}
+\begingroup
+\noindent
+\vspace{-1em}
+\setlength{\parindent}{-5mm}
+\setlength{\leftskip}{5mm}
 \setlength{\parskip}{0pt}
 \footnotesize
-\setlength{\parindent}{0cm}
+
+<div id="refs"></div>
+
+\endgroup
