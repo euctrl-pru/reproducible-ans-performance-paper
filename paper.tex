@@ -376,6 +376,7 @@
 %   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % \renewcommand*{\bibfont}{9pt}
+\renewcommand{\figurename}{Figure}
 
 
 % \usepackage[utf8x]{inputenc}
@@ -688,12 +689,12 @@ extension \texttt{.Rmd} is shown below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\OtherTok{---}
-\FunctionTok{title:}\AttributeTok{ }\StringTok{"R Markdown example"}
-\FunctionTok{author:}\AttributeTok{ }\StringTok{"John Doe"}
-\FunctionTok{date:}\AttributeTok{ }\StringTok{"2019-02-17"}
-\FunctionTok{output:}\AttributeTok{ html_document}
-\OtherTok{---}
+\PreprocessorTok{---}
+\FunctionTok{title}\KeywordTok{:}\AttributeTok{ }\StringTok{"R Markdown example"}
+\FunctionTok{author}\KeywordTok{:}\AttributeTok{ }\StringTok{"John Doe"}
+\FunctionTok{date}\KeywordTok{:}\AttributeTok{ }\StringTok{"2019-02-17"}
+\FunctionTok{output}\KeywordTok{:}\AttributeTok{ html_document}
+\PreprocessorTok{---}
 \end{Highlighting}
 \end{Shaded}
 
@@ -703,9 +704,9 @@ extension \texttt{.Rmd} is shown below:
 \NormalTok{$\textbackslash{}frac\{1\}\{N\} \textbackslash{}sum_\{i=1\}^N (x_i -\textbackslash{}mu)^2$,}
 \NormalTok{followed by numbered list:}
   
-\NormalTok{1. }\FloatTok{*italics* and **bold** text}
-\FloatTok{1. then bullets}
-\FloatTok{    - simple, eh?}
+\NormalTok{1. }\StringTok{*italics* and **bold** text}
+\StringTok{1. then bullets}
+\StringTok{    - simple, eh?}
 
 \NormalTok{and a code chunk:}
 
